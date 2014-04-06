@@ -68,5 +68,8 @@ describe Video do
     expect(@video.averge_rating).to eq(2.5) 
     end
   end
+
+
 end
+
 

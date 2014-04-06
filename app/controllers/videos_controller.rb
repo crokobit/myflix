@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-  before_action :require_user, only: [:show, :search]
+  before_action :require_user, only: [:show, :search, :review]
 
   def index
     @categories = Category.all
@@ -15,5 +15,19 @@ class VideosController < ApplicationController
   end
 
   def review
+    @video = Video.find(params[:id])
+    @review = Review.new(
+      rating: params[:rating],
+      review_description: params[:review_description],
+      user: current_user,
+      video: @video
+    )
+    if @review.save
+      redirect_to @video
+    else
+      flash[:error] = "not success"
+      redirect_to @video
+    end
   end
+
 end

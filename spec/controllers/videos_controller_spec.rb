@@ -33,5 +33,18 @@ describe VideosController do
       expect(response).to redirect_to root_path
     end 
   end
+  
+  describe "videos#review" do
+    context "review data valid" do
+      before(:each) do
+        @video = Fabricate(:video)
+        post :review, id: @video.id
+      end
+      it "saves revies to db" do
+        expect(video.review.count).to eq 1
+      end
+    end
+    context "review data invalid"
+  end
 
 end
