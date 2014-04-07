@@ -1,7 +1,7 @@
 class Video < ActiveRecord::Base
   has_many :video_categories
   belongs_to :category
-  has_many :reviews
+  has_many :reviews, order: "created_at DESC"
   #video should not have many category in this project; however, I am lazy to fix this...
   validates_presence_of :title, :description
 
