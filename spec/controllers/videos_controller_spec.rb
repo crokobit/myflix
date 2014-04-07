@@ -38,10 +38,11 @@ describe VideosController do
     context "review data valid" do
       before(:each) do
         @video = Fabricate(:video)
-        post :review, id: @video.id
+        session[:user_id] = Fabricate(:user).id
+        post :review, id: @video.id, rating: 3, review_description: "dds"
       end
       it "saves revies to db" do
-        expect(video.review.count).to eq 1
+        expect(@video.reviews.count).to eq 1
       end
     end
     context "review data invalid"
