@@ -1,0 +1,2 @@
+class QuenesController < ApplicationController
+end
