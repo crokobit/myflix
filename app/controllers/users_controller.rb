@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
+  before_action :require_user, only: [:show]
 
   def new
     #binding.pry
