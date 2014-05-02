@@ -18,7 +18,6 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @queue_items = QueueItem.where(user: current_user)
   end
   
   def edit; end
