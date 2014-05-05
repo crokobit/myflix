@@ -23,7 +23,7 @@ Myflix::Application.routes.draw do
 
   resources :categories, only: [:show]
 
-  resources :follow_relationships, only: [:show]
+  resources :follow_relationships, only: [:show, :destroy, :create]
   get '/people', to: 'follow_relationships#show'
 
 end
