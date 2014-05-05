@@ -19,7 +19,7 @@ describe UsersController do
         }.to change(User, :count).by(1)
       end
       it "redirects to videos_path" do
-        post :create,user: { name: "crokobit", password: "pw" }
+        post :create,user: { name: "crokobit", password: "pw", email: "crokobit@fdf.ef" }
         expect(response).to redirect_to videos_path
       end
     end

@@ -15,7 +15,7 @@ describe SessionsController do
   describe "sessions#create" do
     context "authenticating successfully" do
       before(:each) do
-        post :create, name: user.name, password: user.password
+        post :create, email: user.email, password: user.password
       end
       it "assigns user_id to session[:user_id]" do
         expect(session[:user_id]).to eq user.id
