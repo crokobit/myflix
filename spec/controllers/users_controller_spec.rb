@@ -10,6 +10,18 @@ describe UsersController do
       expect(assigns(:user)).to be_a_new User
     end
   end
+
+  describe "users#create#mailer" do
+    before do
+      post :create,user: { name: "crokobit", password: "pw", email: "cererkobit@gmail.com" }
+    end
+    it "send email to user" do
+      expect(ActionMailer::Base.deliveries).to_not be_empty
+    end
+    it "send to user's email" do
+      expect(ActionMailer::Base.deliveries.last.to).to eq ["cererkobit@gmail.com"]
+    end
+  end
   
   describe "users#create" do
     context "user data pass validation" do

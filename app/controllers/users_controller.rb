@@ -11,6 +11,9 @@ class UsersController < ApplicationController
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "regisitered"
+
+      AppMailer.notify_on_regisiter(current_user).deliver
+
       redirect_to videos_path
     else
       render :new
