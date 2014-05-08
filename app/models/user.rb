@@ -12,4 +12,21 @@ class User < ActiveRecord::Base
 
   has_many :followed_follower_relationships, class_name: 'FollowRelationship', foreign_key: 'followed_id'
   has_many :followed_me_users, through: :followed_follower_relationships, source: :follower
+  has_one :pw_reset
+
+  def have_pw_reset?
+    !!pw_reset
+  end
+
+  def create_pw_reset
+    pw_reset.destroy if have_pw_reset?
+    PwReset.create(user: self)
+    binding.pry
+  end
+
+  def change_pw_to(pw)
+    #unsure
+    self.password = pw
+    self.save ? true : false
+  end
 end

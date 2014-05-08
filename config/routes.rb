@@ -26,4 +26,8 @@ Myflix::Application.routes.draw do
   resources :follow_relationships, only: [:show, :destroy, :create]
   get '/people', to: 'follow_relationships#show'
 
+  resources :pw_resets, only: [:show, :create, :new]
+  get '/forgot_pw', to: 'pw_resets#new'
+  get '/enter_email', to: 'pw_resets#enter_email'
+  get '/reset_pw', to: 'pw_resets#reset_pw'
 end
