@@ -21,12 +21,12 @@ class User < ActiveRecord::Base
   def create_pw_reset
     pw_reset.destroy if have_pw_reset?
     PwReset.create(user: self)
-    binding.pry
   end
 
   def change_pw_to(pw)
-    #unsure
-    self.password = pw
-    self.save ? true : false
+    #has_secure_password validations: false
+    # lead to self.update always return true ??!!!
+    self.update(password: pw)
+    pw.blank? ? false : true
   end
 end
