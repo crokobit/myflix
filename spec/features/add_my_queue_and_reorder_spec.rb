@@ -50,16 +50,11 @@ feature "add to my queue and rearrange list order" do
   end
   
   def add_video_to_queue(id)
-      visit videos_path
-      find("a[href='/videos/#{id}']").click
-      click_link "+ My Queue"
+    click_video(id)
+    click_link "+ My Queue"
   end
 
-  def sign_in
-    visit root_path
-    click_link "Sign In"
-    fill_in 'Name', with: @user.name
-    fill_in 'Password', with: @user.password
-    click_button "Login"
+  def remove_queue_item(id)
+    find("a[href='/queues/#{id}']").click
   end
 end

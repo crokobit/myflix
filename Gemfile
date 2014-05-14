@@ -18,6 +18,7 @@ group :development do
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
+  gem 'letter_opener'
 end
 
 group :test, :development do
@@ -30,6 +31,7 @@ group :test, :development do
   gem "database_cleaner"
   gem "launchy"
 end
+
 
 group :production do
   gem 'pg'

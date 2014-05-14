@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140409154736) do
+ActiveRecord::Schema.define(version: 20140507100100) do
 
   create_table "categories", force: true do |t|
     t.string "name"
+  end
+
+  create_table "follow_relationships", force: true do |t|
+    t.integer "follower_id"
+    t.integer "followed_id"
+  end
+
+  create_table "pw_resets", force: true do |t|
+    t.integer "user_id"
+    t.string  "token"
   end
 
   create_table "queue_items", force: true do |t|

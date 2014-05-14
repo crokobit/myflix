@@ -1,6 +1,7 @@
 = form_tag '/login' do |f|
-  = label_tag :name
-  = text_field_tag :name
+  = label_tag :email
+  = text_field_tag :email
   = label_tag :password
   = text_field_tag :password
   = submit_tag 'Login'
+= link_to "Forget Password", enter_email_path

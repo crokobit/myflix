@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
+  before_action :require_user, only: [:show]
 
   def new
     #binding.pry
@@ -10,10 +11,17 @@ class UsersController < ApplicationController
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = "regisitered"
+
+      AppMailer.notify_on_regisiter(current_user).deliver
+
       redirect_to videos_path
     else
       render :new
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
   end
   
   def edit; end
@@ -30,6 +38,7 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
   end
+
 
   private
   def user_param

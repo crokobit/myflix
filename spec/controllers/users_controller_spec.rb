@@ -10,6 +10,18 @@ describe UsersController do
       expect(assigns(:user)).to be_a_new User
     end
   end
+
+  describe "users#create#mailer" do
+    before do
+      post :create,user: { name: "crokobit", password: "pw", email: "cererkobit@gmail.com" }
+    end
+    it "send email to user" do
+      expect(ActionMailer::Base.deliveries).to_not be_empty
+    end
+    it "send to user's email" do
+      expect(ActionMailer::Base.deliveries.last.to).to eq ["cererkobit@gmail.com"]
+    end
+  end
   
   describe "users#create" do
     context "user data pass validation" do
@@ -19,7 +31,7 @@ describe UsersController do
         }.to change(User, :count).by(1)
       end
       it "redirects to videos_path" do
-        post :create,user: { name: "crokobit", password: "pw" }
+        post :create,user: { name: "crokobit", password: "pw", email: "crokobit@fdf.ef" }
         expect(response).to redirect_to videos_path
       end
     end
@@ -76,4 +88,17 @@ describe UsersController do
     end
   end
 
+  describe "users#show" do
+    it_behaves_like "require_sign_in" do 
+      let(:action) {
+        get :show, id: user
+      }
+    end
+    it "assigns a user to @user" do
+      set_current_user
+      user_query = Fabricate(:user)
+      get :show, id: user_query
+      expect(assigns(:user)).to eq user_query
+    end
+  end
 end
