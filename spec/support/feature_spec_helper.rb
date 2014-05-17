@@ -1,9 +1,9 @@
 
-  def sign_in
+  def sign_in(user)
     visit root_path
     click_link "Sign In"
-    fill_in 'Email', with: @user.email
-    fill_in 'Password', with: @user.password
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
     click_button "Login"
   end
   
