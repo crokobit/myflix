@@ -4,7 +4,7 @@
 
 class QueuesController < ApplicationController
 
-  before_action :require_user, only: [:create, :destroy, :update_instant]
+  before_action :require_user, only: [:create, :destroy, :update_instant, :index]
 
   def create
     queue_target  = ( QueueItem.where(user: current_user).count + 1  )

@@ -30,6 +30,7 @@ group :test, :development do
   gem 'rspec-console'
   gem "database_cleaner"
   gem "launchy"
+  gem 'capybara-email'
 end
 
 

@@ -35,7 +35,7 @@ class PwResetsController < ApplicationController
     user = pw_reset.user
     if user.change_pw_to(params[:password])
       user.pw_reset.destroy
-      flash[:success] = "pw reset success"
+      flash[:success] = "password reset success"
       redirect_to root_path
     else
       #unsure

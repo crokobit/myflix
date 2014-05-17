@@ -17,7 +17,8 @@ feature "add to my queue and rearrange list order" do
 
   scenario "login, add to my_queue, check button invisible ,reordered check, delete check" do
 
-    sign_in  
+    sign_in(@user)
+    #Why sign_in(User.first) can't work ???
     Video.all.each do |video|
       add_video_to_queue(video.id)
       expect_video_to_be_in_the_queue(video)

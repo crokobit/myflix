@@ -12,7 +12,8 @@ feature "social networking feature" do
     end
   end
   scenario do
-    sign_in 
+    sign_in (@user)
+    #sign_in (User.first) can not work ???
     click_video(1)
     click_link "ivan"
     click_link "Follow" #using click_button fail
