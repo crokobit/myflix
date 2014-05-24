@@ -7,6 +7,8 @@ Myflix::Application.routes.draw do
   get '/search', to: 'videos#search'
   #get '/', to: 'front#index'
   resources :users, only: [:new, :create, :edit, :update, :show]
+  get '/new_user_via_invitation', to: 'users#new_user_via_invitation'
+
   resources :sessions, only: [:new, :create, :destroy]
   root to: 'front#index'
   
@@ -30,4 +32,9 @@ Myflix::Application.routes.draw do
   get '/forgot_pw', to: 'pw_resets#new'
   get '/enter_email', to: 'pw_resets#enter_email'
   get '/reset_pw', to: 'pw_resets#reset_pw'
+
+  resources :invite_users
+  get '/send_invite_email', to: 'invite_users#new'
+
+
 end

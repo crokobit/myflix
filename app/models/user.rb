@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :followed_follower_relationships, class_name: 'FollowRelationship', foreign_key: 'followed_id'
   has_many :followed_me_users, through: :followed_follower_relationships, source: :follower
   has_one :pw_reset
+  has_many :invite_users
 
   def have_pw_reset?
     !!pw_reset
@@ -28,5 +29,14 @@ class User < ActiveRecord::Base
     # lead to self.update always return true ??!!!
     self.update(password: pw)
     pw.blank? ? false : true
+  end
+
+  def is_following(followed)
+    self.following_users << followed 
+  end
+
+  def following_each_other_with(another_user)
+    self.is_following(another_user)
+    another_user.is_following(self)
   end
 end

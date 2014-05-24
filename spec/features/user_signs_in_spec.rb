@@ -2,6 +2,8 @@ require 'spec_helper'
 
 feature "user signs in" do
   background do
+    User.all.map(&:destroy)
+    #WHY QQQQQQ
   end
   scenario "with right username and password" do
     @user = Fabricate(:user)

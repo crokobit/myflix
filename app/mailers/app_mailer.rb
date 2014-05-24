@@ -11,4 +11,9 @@ class AppMailer < ActionMailer::Base
     @user = user
     mail to: @user.email, subject: "Reset pw"
   end
+
+  def notify_invitation_link(invite_user)
+    @invite_user = invite_user
+    mail to: invite_user.recipient_email,subject: "invitation"
+  end
 end

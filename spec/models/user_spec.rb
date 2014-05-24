@@ -29,6 +29,10 @@ describe User do
   end
 
   context "change_pw_to(pw)" do
+    before do
+      User.all.map(&:destroy)
+      #WHY QQQQQQ
+    end
     it"returns true if changing password successfully" do
       expect(user.change_pw_to "crokobit").to be_true
     end
@@ -39,6 +43,19 @@ describe User do
     end
     it"returns false if changing password fail" do
       expect(user.change_pw_to nil).to be_false
+    end
+  end
+
+  context "folllow relationship" do
+    let(:followed) { Fabricate(:user) }
+    it "is_following(followed) sets self following another user" do
+      user.is_following(followed)        
+      expect(user.following_users).to include followed
+    end
+    it "following_each_other_with(another_user)" do
+      user.following_each_other_with(followed)
+      expect(user.following_users).to include followed
+      expect(user.followed_me_users).to include followed
     end
   end
 end
