@@ -5,7 +5,7 @@
         = bootstrap_form_for(@user, left: "col-sm-2", right: "col-sm-6", style: :horizontal) do |f|
           %header
             %h1 Register
-          = hidden_field_tag 'token', @invite_user.token
+          = hidden_field_tag 'token', @invite_user.try(:token)
           = f.email_field :email, label: "Email Address"
           = f.password_field :password
           = f.text_field :name, label: "Full Name"
