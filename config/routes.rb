@@ -1,6 +1,7 @@
 Myflix::Application.routes.draw do
   get 'ui(/:action)', controller: 'ui'
   get '/home', to: 'videos#index'
+  #get '/', to: 'videos#index'can not direct to same controller ??
   resources :videos do
     resources :reviews, only: [:create, :update]
   end

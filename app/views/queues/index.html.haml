@@ -16,4 +16,4 @@
               %th(width="15%") Remove
           %tbody
             = render current_user.queue_items.sort_by{|obj| obj.position}
-        = submit_tag "Update Instant Queue", class: "btn btn-default"
+        = submit_tag "Update Instant Queue", class: "btn btn-default" unless current_user.queue_items.empty?
