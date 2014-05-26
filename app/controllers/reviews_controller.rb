@@ -8,7 +8,7 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to video
     else
-      flash[:error] = "Can not rating twice !!"
+      flash[:danger] = "Can not rating twice !!"
       redirect_to video
     end
   end

@@ -17,7 +17,7 @@ class FollowRelationshipsController < ApplicationController
     if @relationship.save
       flash[:success] = "follow success!"
     else
-      flash[:error] = "follow fail!"
+      flash[:danger] = "follow fail!"
     end
       redirect_to user_path(followed)
   end

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       flash[:notice] = "Login success"
       redirect_to videos_path
     else
-      flash[:error] = "Login fail"
+      flash[:danger] = "Login fail"
       redirect_to login_path
     end
   end

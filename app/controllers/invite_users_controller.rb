@@ -9,7 +9,7 @@ class InviteUsersController < ApplicationController
       send_email(@invite_user)
       render 'invitation_success'
     else 
-      flash[:error] = "recipient already regisitered"
+      flash[:danger] = "recipient already regisitered"
       render :new
     end
   end
@@ -20,7 +20,7 @@ class InviteUsersController < ApplicationController
     if @invite_user
       redirect_to new_user_via_invitation_path(token: @invite_user.token)
     else
-      flash[:error] = "link is expired"
+      flash[:danger] = "link is expired"
       redirect_to root_path
     end
   end

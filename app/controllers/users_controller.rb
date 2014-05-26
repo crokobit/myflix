@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     if @user.update(user_param)
       redirect_to root_path
     else
-      flash[:error] = "invalid update"
+      flash[:danger] = "invalid update"
       render :edit
     end
   end
