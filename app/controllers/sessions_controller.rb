@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     user = User.where(email: params[:email]).first
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      flash[:notice] = "Login success"
+      flash[:info] = "Login success"
       redirect_to videos_path
     else
       flash[:danger] = "Login fail"
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    flash[:notice] = 'You had logged already'
+    flash[:info] = 'You had logged already'
     redirect_to root_path
   end
 end
