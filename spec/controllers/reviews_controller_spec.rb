@@ -50,10 +50,11 @@ describe ReviewsController do
           }.to change{Review.count}.by 0
         end
         it "shows alert message : when user do not give rating" do
-          post :create, video_id: video.id, review: { rating: nil, review_description: "" }
+          post :create, video_id: video.id, review: { rating: "", review_description: "" }
           expect(flash[:danger]).to eq "must give rating"
         end
         it "does not save review to db when user do not give rating" do
+          post :create, video_id: video.id, review: { rating: "", review_description: "" }
           expect(Review.count).to eq 0
         end
       end
