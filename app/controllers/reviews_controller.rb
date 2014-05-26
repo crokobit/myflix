@@ -3,6 +3,7 @@ class ReviewsController < ApplicationController
   before_action :require_user, only: [:create]
 
   def create
+    binding.pry
     video = Video.find(params[:video_id])
     @review = Review.new(review_params)
     if @review.save
@@ -29,6 +30,6 @@ class ReviewsController < ApplicationController
   end
 
   def not_rating?
-    params[:review][:rating].nil?
+    params[:review][:rating].empty?
   end
 end
