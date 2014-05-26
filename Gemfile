@@ -23,14 +23,18 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'fabrication'
-  gem 'faker'
   gem 'capybara'
   gem 'shoulda-matchers'
   gem 'rspec-console'
   gem "database_cleaner"
   gem "launchy"
   gem 'capybara-email'
+end
+
+group :test, :development, :production do
+  gem 'rspec-rails'
+  gem 'fabrication'
+  gem 'faker'
 end
 
 
