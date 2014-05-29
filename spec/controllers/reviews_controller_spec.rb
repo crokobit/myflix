@@ -70,7 +70,6 @@ describe ReviewsController do
         expect(Review.count).to eq 0
       end
 
-      it_behaves_like "require_sign_in"
 
     end
   end

@@ -58,4 +58,15 @@ describe User do
       expect(user.followed_me_users).to include followed
     end
   end
+
+  context "can follow another user or not" do
+    it "returns false if going to follow self" do
+      expect(user.can_follow?(user)).to be_false
+    end
+    it "returns false if already following another user" do
+      followed = Fabricate(:user)
+      FollowRelationship.create(follower: user, followed: followed)
+      expect(user.can_follow?(followed)).to be_false
+    end
+  end
 end

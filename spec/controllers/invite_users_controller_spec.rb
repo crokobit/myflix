@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe InviteUsersController do
-  let(:user) {Fabricate(:user)}
   describe "invite_users#new" do
+    let(:user) {Fabricate(:user)}
     before do
       set_current_user
       get :new
@@ -16,7 +16,9 @@ describe InviteUsersController do
     end
   end
   describe "invite_users#create" do
+    let(:user) {Fabricate(:user)}
     context "require login" do
+      let(:user) {Fabricate(:user)}
       before do
         InviteUser.delete_all
         #WHY ?????
@@ -73,6 +75,7 @@ describe InviteUsersController do
   end
 
   describe "invite_users#show (email link to here)" do
+    let(:user) {Fabricate(:user)}
     before do
       @invitor = user
       @invite_user = Fabricate(:invite_user, invitor: @invitor)

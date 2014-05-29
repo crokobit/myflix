@@ -39,4 +39,8 @@ class User < ActiveRecord::Base
     self.is_following(another_user)
     another_user.is_following(self)
   end
+
+  def can_follow?(another_user)
+    FollowRelationship.new(follower: self, followed: another_user).valid? 
+  end
 end
