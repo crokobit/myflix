@@ -12,7 +12,7 @@
       = text_field_tag :search_item, nil, placeholder: 'Search for videos here', class: "form-control"
     = button_tag "Search", class: "btn btn-dafault"
 
-  = if logged_in?
+  - if logged_in?
     #user_links.pull-right
       %ul
         %li.dropdown
