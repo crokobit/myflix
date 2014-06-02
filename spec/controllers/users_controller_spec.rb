@@ -15,17 +15,17 @@ describe UsersController do
     before do
       post :create,user: { name: "crokobit", password: "pw", email: "cererkobit@gmail.com" }
     end
-    it "send email to user" do
+    it "sends email to user" do
       expect(ActionMailer::Base.deliveries).to_not be_empty
     end
-    it "send to user's email" do
+    it "sends to user's email" do
       expect(ActionMailer::Base.deliveries.last.to).to eq ["cererkobit@gmail.com"]
     end
   end
   
   describe "users#create" do
     context "user data pass validation" do
-      it "save user to db" do
+      it "saves user to db" do
         expect{
           post :create,user: Fabricate.attributes_for(:user)
         }.to change(User, :count).by(1)
@@ -33,6 +33,35 @@ describe UsersController do
       it "redirects to videos_path" do
         post :create,user: { name: "crokobit", password: "pw", email: "crokobit@fdf.ef" }
         expect(response).to redirect_to videos_path
+      end
+    end
+
+    context "create user through invite" do
+      it "destroys all InviteUser link inviting the user" do
+        invite_user = Fabricate(:invite_user, invitor: user)
+        new_user_attributes = {
+          name: Faker::Name.name,
+          password: Faker::Internet.password,
+          email: invite_user.recipient_email
+        } 
+        post :create, user: new_user_attributes, token: invite_user.token
+        new_user = User.find_by(email: invite_user.recipient_email)
+        expect(InviteUser.where(recipient_email: invite_user.recipient_email).count).to be 0 
+      end
+      it "sets follow each other relationship" do
+        invite_user = Fabricate(:invite_user, invitor: user)
+        new_user_attributes = {
+          name: Faker::Name.name,
+          password: Faker::Internet.password,
+          email: invite_user.recipient_email
+        } 
+        post :create, user: new_user_attributes, token: invite_user.token
+        new_user = User.find_by(email: invite_user.recipient_email)
+        expect(user.following_users).to include new_user
+        expect(user.followed_me_users).to include new_user
+      end
+      it "create user successfully after retry" do
+        # I don;t know how to test this
       end
     end
 
@@ -99,6 +128,24 @@ describe UsersController do
       user_query = Fabricate(:user)
       get :show, id: user_query
       expect(assigns(:user)).to eq user_query
+    end
+  end
+
+  describe "users#new_user_via_invitation" do
+    before do
+      set_current_user
+      @invitor = user
+      @invite_user = Fabricate(:invite_user, invitor: @invitor)
+      get :new_user_via_invitation, token: @invite_user.token
+    end
+    it "finds InviteUser" do
+      expect(assigns(:invite_user)).to eq @invite_user
+    end
+    it "prefills email" do
+      expect(assigns(:user).email).to eq @invite_user.recipient_email
+    end
+    it "render 'users/_form_partial'" do
+      expect(response).to render_template '_form_partial'  
     end
   end
 end

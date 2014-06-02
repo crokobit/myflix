@@ -7,7 +7,7 @@ class FollowRelationshipsController < ApplicationController
 
   def destroy
     @relationship = FollowRelationship.find_by(follower: current_user, followed: User.find(params[:id]))
-    @relationship.destroy
+    @relationship.try(:destroy)
     redirect_to people_path
   end
 
@@ -17,8 +17,9 @@ class FollowRelationshipsController < ApplicationController
     if @relationship.save
       flash[:success] = "follow success!"
     else
-      flash[:error] = "follow fail!"
+      flash[:danger] = "follow fail!"
     end
       redirect_to user_path(followed)
   end
+
 end

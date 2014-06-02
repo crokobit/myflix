@@ -4,11 +4,9 @@ feature "social networking feature" do
     @user = Fabricate(:user)
     @followed = Fabricate(:user, name: "ivan")
     sport = Fabricate(:category, name: "sport")
-    5.times do
-      review = Fabricate(:review, user: @followed)
-      Fabricate(:video, category: sport) do
-        reviews(count: 1) { review }
-      end
+    review = Fabricate(:review, user: @followed)
+    Fabricate(:video, category: sport) do
+      reviews(count: 1) { review }
     end
   end
   scenario do
@@ -17,6 +15,7 @@ feature "social networking feature" do
     click_video(1)
     click_link "ivan"
     click_link "Follow" #using click_button fail
+    #click_link "PEOPLE"
     visit '/people'
     expect_followed_user_to_be_in_the_queue(@followed)
     click_remove_follow(@followed)

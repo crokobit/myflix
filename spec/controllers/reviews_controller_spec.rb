@@ -7,14 +7,11 @@ describe ReviewsController do
 
   describe "reviews#create" do
     context "logged in" do
-      before(:each) do
-        set_current_user
-      end
-
       context "data pass validation" do
         before(:each) do
+          set_current_user
           @review = Fabricate.build(:review)
-          post :create, id: @review.id, video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
+          post :create,  video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
         end
         it "assigns rating to @review" do
           expect(assigns(:review).rating).to eq @review.rating
@@ -38,9 +35,26 @@ describe ReviewsController do
       
       context "data not pass validation" do
         before(:each) do
-          post :create, video_id: video.id, review: { rating: nil, review_description: "" }
+          set_current_user
+          @review = Fabricate.build(:review)
         end
-        it "does not save review to db" do
+        it "shows alert message : when user already voted" do
+          post :create, video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
+          post :create, video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
+          expect(flash[:danger]).to eq "Can not rating twice !!"
+        end
+        it "does not save review to db when user already voted" do
+          post :create, video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
+          expect{
+            post :create, video_id: video.id, review: { rating: @review.rating, review_description: @review.review_description }
+          }.to change{Review.count}.by 0
+        end
+        it "shows alert message : when user do not give rating" do
+          post :create, video_id: video.id, review: { rating: "", review_description: "" }
+          expect(flash[:danger]).to eq "must give rating"
+        end
+        it "does not save review to db when user do not give rating" do
+          post :create, video_id: video.id, review: { rating: "", review_description: "" }
           expect(Review.count).to eq 0
         end
       end
@@ -56,7 +70,6 @@ describe ReviewsController do
         expect(Review.count).to eq 0
       end
 
-      it_behaves_like "require_sign_in"
 
     end
   end

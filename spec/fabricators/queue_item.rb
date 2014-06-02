@@ -10,6 +10,5 @@ Fabricator(:queue_item_no_review, from: :queue_item) do
 end
 
 Fabricator(:queue_item_same_user, from: :queue_item) do
-  position { QueueItem.count + 1 }
   video
 end
