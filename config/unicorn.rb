@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+# config/unicorn.rb
+>>>>>>> Mod5-2-Heroku
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
 timeout 15
 preload_app true
@@ -8,6 +12,12 @@ before_fork do |server, worker|
     Process.kill 'QUIT', Process.pid
   end
 
+<<<<<<< HEAD
+=======
+  # https://coderwall.com/p/fprnhg
+  @sidekiq_pid ||= spawn("bundle exec sidekiq -c 2")
+
+>>>>>>> Mod5-2-Heroku
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
 end
@@ -20,3 +30,7 @@ after_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
 end
+<<<<<<< HEAD
+=======
+
+>>>>>>> Mod5-2-Heroku
