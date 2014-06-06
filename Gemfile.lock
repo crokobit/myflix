@@ -224,6 +224,7 @@ DEPENDENCIES
   pry-nav
   rails
   rails_12factor
+  redis
   rspec-console
   rspec-rails
   sass-rails
