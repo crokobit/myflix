@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true
   
-  has_many :reviews, order: "created_at DESC"
+  has_many :reviews, -> { order(created_at: :desc) }
   has_many :queue_items
 
   has_many :follower_followed_relationships, class_name: 'FollowRelationship', foreign_key: 'follower_id'
