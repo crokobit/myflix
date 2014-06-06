@@ -11,6 +11,7 @@ gem 'jquery-rails'
 gem 'bootstrap_form', github: "bootstrap-ruby/rails-bootstrap-forms"
 gem 'bcrypt-ruby', '~> 3.1.2'
 gem 'sidekiq'
+gen 'unicorn'
 
 group :development do
   gem 'sqlite3'
