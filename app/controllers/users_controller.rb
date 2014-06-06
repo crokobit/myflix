@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     if @user.save
       session[:user_id] = @user.id
       deal_with_invitation unless invitor.nil?
-      AppMailer.notify_on_regisiter(current_user).deliver
+      AppMailer.delay.notify_on_regisiter(current_user.id)
       redirect_to videos_path
     else
       render :new

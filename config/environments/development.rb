@@ -1,7 +1,18 @@
 Myflix::Application.configure do
+  #test gmail
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: 587,
+    user_name: "crokobit.web.dev@gmail.com",
+    password: "rails1201",
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 
   config.action_mailer.default_url_options = { host: 'localhost:3000'}
-
   config.cache_classes = false
 
   # Show full error reports and disable caching
@@ -10,7 +21,7 @@ Myflix::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method = :letter_opener
+  #config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

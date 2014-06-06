@@ -20,7 +20,6 @@ feature "invite user" do
 
 
     visit '/people'
-    save_and_open_page
     expect_followed_user_to_be_in_the_queue(@invitor)
   end
 

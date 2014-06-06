@@ -10,6 +10,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'bootstrap_form', github: "bootstrap-ruby/rails-bootstrap-forms"
 gem 'bcrypt-ruby', '~> 3.1.2'
+gem 'sidekiq'
 
 group :development do
   gem 'sqlite3'
