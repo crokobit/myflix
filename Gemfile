@@ -13,6 +13,7 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'redis'
+gem 'paratrooper'
 
 group :development do
   gem 'sqlite3'
