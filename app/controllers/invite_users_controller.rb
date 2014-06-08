@@ -31,7 +31,7 @@ class InviteUsersController < ApplicationController
   end
 
   def send_email(invite_user)
-    AppMailer.notify_invitation_link(invite_user).deliver
+    AppMailer.delay.notify_invitation_link(invite_user.token)
   end
   
   def not_regisitered_yet?(email)

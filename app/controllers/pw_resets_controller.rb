@@ -17,7 +17,7 @@ class PwResetsController < ApplicationController
   end
 
   def send_email(user)
-    AppMailer.notify_pw_reset_link(user).deliver
+    AppMailer.delay.notify_pw_reset_link(user.id)
   end
 
   # /pw_resets/token to here

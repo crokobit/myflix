@@ -1,19 +1,22 @@
 class AppMailer < ActionMailer::Base
-  default :from => "foobar@example.org"  
+  default :from => "crokobit.web.deviss@gmail.com"  
 
-  def notify_on_regisiter(user)
-    @user = user
+
+  def notify_on_regisiter(user_id)
+    @user = User.find(user_id)
     mail to: @user.email, subject: "Thanks for regisiter!!"
     # mail form: 'crosdadbit@gmail.com', to: @user.email, subject: "Thanks for regisiter!!" FAIL!!!
   end
 
-  def notify_pw_reset_link(user)
-    @user = user
+  def notify_pw_reset_link(user_id)
+    @user = User.find(user_id)
     mail to: @user.email, subject: "Reset pw"
   end
 
-  def notify_invitation_link(invite_user)
-    @invite_user = invite_user
-    mail to: invite_user.recipient_email,subject: "invitation"
+  def notify_invitation_link(invite_user_token)
+    @invite_user = InviteUser.find_by(token: invite_user_token)
+    mail to: @invite_user.recipient_email,subject: "invitation"
   end
+
+
 end
