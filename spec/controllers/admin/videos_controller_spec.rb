@@ -16,5 +16,13 @@ describe Admin::VideosController do
       get :new
       expect(assigns(:video)).to be_instance_of Video
     end
+
+    describe "admin/videos#create" do
+      it "create new video if data all valid" do
+        post :create, videos: {
+        
+        }
+      end
+    end
   end
 end
