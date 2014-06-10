@@ -18,11 +18,7 @@ describe Admin::VideosController do
     end
 
     describe "admin/videos#create" do
-      it "create new video if data all valid" do
-        post :create, videos: {
-        
-        }
-      end
+      it "create new video if data all valid"
     end
   end
 end
