@@ -13,3 +13,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/public/uploads
+
+#Ignore VIM temp
+*.swp
+
+#Ignore Redis temp file
+*.rdb
