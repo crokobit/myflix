@@ -16,6 +16,7 @@ gem 'redis'
 gem 'paratrooper'
 gem 'carrierwave'
 gem 'mini_magick'
+gem "figaro"
 
 group :development do
   gem 'sqlite3'
