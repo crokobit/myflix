@@ -9,7 +9,7 @@
           %span= "Rating: #{@video.averge_rating}/5.0"
         %p= @video.description
         .actions
-          %a.btn.btn-primary(href="") Watch Now
+          = link_to "Watch Now", @video.url, class: "btn btn-primary"
           - unless video_is_in_my_queue 
             = link_to "+ My Queue", queues_path(id: @video.id), method: "post", class: "btn btn-default"
 
