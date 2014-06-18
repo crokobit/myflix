@@ -12,8 +12,8 @@ feature "add video" do
     fill_in 'Title', with: video.title
     select category.name, from: 'Category'
     fill_in 'Description', with: video.description
-    attach_file "Large cover", "spec/support/uploads/monk_large.jpg"
-    attach_file "Small cover", "spec/support/uploads/monk.jpg"
+    attach_file "Large cover", "public/tmp//monk_large.jpg"
+    attach_file "Small cover", "public/tmp/monk.jpg"
     fill_in 'Video URL', with: video.url
     click_button "Add Video"
     sign_out
