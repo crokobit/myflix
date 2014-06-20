@@ -12,7 +12,6 @@ class UsersController < ApplicationController
     render '_form_partial'
   end
   def create
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     token = params[:stripeToken]
     
     @user = User.new(user_param)
@@ -21,11 +20,10 @@ class UsersController < ApplicationController
       deal_with_invitation unless invitor.nil?
 
       if token
-        charge = Stripe::Charge.create(
+        charge = StripeWrapper::Charge.create(
           :amount => 1000, # amount in cents, again
           :currency => "usd",
-          :card => token,
-          :description => "payinguser@example.com"
+          :card => token
         )
       end
 
