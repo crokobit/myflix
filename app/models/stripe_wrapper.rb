@@ -9,7 +9,7 @@ module StripeWrapper
       begin
         response = Stripe::Charge.create(
           amount: options[:amount],
-          currency: options[:currency],
+          currency: "usd",
           card: options[:card]
         )
         new(response, :success)
@@ -17,8 +17,11 @@ module StripeWrapper
         new(e, :error)
       end
     end
-    def succeful?
-      status == :success
+    def successful?
+      @status == :success
+    end
+    def response
+      @response
     end
   end
 

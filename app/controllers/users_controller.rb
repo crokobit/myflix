@@ -12,20 +12,19 @@ class UsersController < ApplicationController
     render '_form_partial'
   end
   def create
-    token = params[:stripeToken]
-    
     @user = User.new(user_param)
+    token = params[:stripeToken]
+    if token
+      stripe_response = StripeWrapper::Charge.create(
+        :amount => 1000, # amount in cents, again
+        :card => token
+      )
+    end
+    
     if @user.save
       session[:user_id] = @user.id
       deal_with_invitation unless invitor.nil?
 
-      if token
-        charge = StripeWrapper::Charge.create(
-          :amount => 1000, # amount in cents, again
-          :currency => "usd",
-          :card => token
-        )
-      end
 
       AppMailer.delay.notify_on_regisiter(current_user.id)
       redirect_to videos_path
