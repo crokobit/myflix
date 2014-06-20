@@ -43,4 +43,8 @@ class User < ActiveRecord::Base
   def can_follow?(another_user)
     FollowRelationship.new(follower: self, followed: another_user).valid? 
   end
+
+  def is_admin?
+    admin
+  end
 end

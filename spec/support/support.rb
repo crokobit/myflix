@@ -9,3 +9,7 @@ end
 def expect_link_not_be_see(link_string)
   expect(page).to_not have_content link_string
 end
+
+def current_user
+  User.find(session[:user_id]) if session[:user_id]
+end

@@ -69,4 +69,15 @@ describe User do
       expect(user.can_follow?(followed)).to be_false
     end
   end
+
+  context "is_admin?" do
+    it "returns true if it is admin" do
+      user = Fabricate(:user, admin: true)
+      expect(user.is_admin?).to be_true
+    end
+    it "returns false if it is not admin" do
+      user = Fabricate(:user)
+      expect(user.is_admin?).to be_false
+    end
+  end
 end

@@ -5,6 +5,9 @@ Myflix::Application.routes.draw do
   resources :videos do
     resources :reviews, only: [:create, :update]
   end
+  namespace :admin do
+    resources :videos, only: [:new, :create]
+  end
   get '/search', to: 'videos#search'
   #get '/', to: 'front#index'
   resources :users, only: [:new, :create, :edit, :update, :show]

@@ -39,6 +39,7 @@ crokobit = Fabricate(:user, name: "crokobit", password: "pw")
 ivan = Fabricate(:user, name: "ivan")
 eva = Fabricate(:user, name: "eva")
 
+User.create(name: "crokobit", password: "pw", email: "crokobit@gmail.com", admin: true)
 10.times do
   Fabricate(:video, category: [sport, news, grammer].sample) do
     reviews(count: 1) {
