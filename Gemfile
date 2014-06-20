@@ -18,6 +18,8 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem "figaro"
 gem 'stripe'
+gem 'vcr'
+gem 'webmock'
 
 group :development do
   gem 'sqlite3'

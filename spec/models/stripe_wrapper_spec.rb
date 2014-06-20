@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe StripeWrapper do
-  describe "charge with valid card" do
+  describe "charge with valid card" , :vcr do
     before do
       Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
       token = Stripe::Token.create(
@@ -26,7 +26,7 @@ describe StripeWrapper do
     end
   end
 
-  describe "charge with invalid card" do
+  describe "charge with invalid card" , :vcr do
     before do
       Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
       token = Stripe::Token.create(
