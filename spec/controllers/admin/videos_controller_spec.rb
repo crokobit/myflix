@@ -13,6 +13,7 @@ describe Admin::VideosController do
       user = Fabricate(:user, admin: true)
       session[:user_id] = user.id
       # WHY set_current_user can not work ??!! sth about let syntax??
+      # let scope problem?
       get :new
       expect(assigns(:video)).to be_instance_of Video
     end

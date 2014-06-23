@@ -3,6 +3,7 @@ def clear_current_user
 end
 
 def set_current_user
+  #only vaild when set user using let(:user)
   session[:user_id] = user.id
 end
 
