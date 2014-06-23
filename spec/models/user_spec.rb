@@ -29,10 +29,6 @@ describe User do
   end
 
   context "change_pw_to(pw)" do
-    before do
-      User.all.map(&:destroy)
-      #WHY QQQQQQ
-    end
     it"returns true if changing password successfully" do
       expect(user.change_pw_to "crokobit").to be_true
     end
