@@ -39,6 +39,9 @@ group :test, :development do
   gem "database_cleaner"
   gem "launchy"
   gem 'capybara-email'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem "capybara-webkit"
 end
 
 group :test, :development, :production do
