@@ -10,7 +10,7 @@ feature "user signs in" do
     sign_in(@user)
     expect(page).to have_content @user.name
   end
-  scenario "regisiter", {js: true, vcr: true} do
+  scenario "register", {js: true, vcr: true} do
     user = Fabricate.build(:user)
     visit root_path
     click_link "Sign Up Now!"
