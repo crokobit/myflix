@@ -14,3 +14,27 @@ end
 def current_user
   User.find(session[:user_id]) if session[:user_id]
 end
+
+def valid_stripe_token
+  Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
+  Stripe::Token.create(
+    card: {
+      number: "4242424242424242",
+      exp_month: 6,
+      exp_year: 2015,
+      cvc: "314"
+    }
+  ).id
+end
+
+def card_declined_stripe_token
+  Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
+  Stripe::Token.create(
+    card: {
+      number: "4000000000000002",
+      exp_month: 6,
+      exp_year: 2015,
+      cvc: "314"
+    }
+  ).id
+end

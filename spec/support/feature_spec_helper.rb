@@ -17,3 +17,10 @@
       find("a[href='/videos/#{id}']").click
   end
 
+  def fill_in_with_valid_card
+    fill_in 'Credit Card Number', with:"4242424242424242"
+    fill_in 'Security Code', with: "222"
+    select '6 - June', from: "date_month"
+    select '2015', from: "date_year"
+  end
+

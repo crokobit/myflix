@@ -14,23 +14,26 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_param)
     token = params[:stripeToken]
-    if token
+
+    if @user.valid?
       stripe_response = StripeWrapper::Charge.create(
         :amount => 1000, # amount in cents, again
         :card => token
       )
-    end
-    
-    if @user.save
-      session[:user_id] = @user.id
-      deal_with_invitation unless invitor.nil?
+      if stripe_response.successful? && @user.save
+        session[:user_id] = @user.id
+        deal_with_invitation unless invitor.nil?
 
 
-      AppMailer.delay.notify_on_regisiter(current_user.id)
-      redirect_to videos_path
-    else
+        AppMailer.delay.notify_on_regisiter(current_user.id)
+        redirect_to videos_path
+      else
+        render :new
+      end
+    elsif
       render :new
     end
+    
   end
 
   def show
