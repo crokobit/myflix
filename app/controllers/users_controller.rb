@@ -11,22 +11,15 @@ class UsersController < ApplicationController
     @user = User.new(email: @invite_user.recipient_email)
     render '_form_partial'
   end
+
   def create
     @user = User.new(user_param)
-    service = SignUpService.new(@user, params[:invite_token], params[:stripeToken])
+    service = SignUpService.new(@user, params[:invite_token], params[:stripeToken]).sign_up
 
-    if @user.valid?
-      service.pay_via_stripe
-      if service.pay_successful? && @user.save
-        service.deal_with_invitation
-
-
-        service.send_regisiter_success_email
-        redirect_to videos_path
-      else
-        render :new
-      end
-    elsif
+    if service.status == :success
+      redirect_to videos_path
+    else
+      flash[:alert] = service.error_message
       render :new
     end
     

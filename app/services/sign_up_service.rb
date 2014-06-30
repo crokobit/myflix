@@ -1,11 +1,34 @@
 class SignUpService
-  def  initialize(user, invite_token, stripe_token)
+  attr_reader :status, :error_message
+  def initialize(user, invite_token, stripe_token)
     @user = user
     @invite_token = invite_token
     @invitor = invitor
     @stripe_token = stripe_token
+    @status = nil
   end
 
+  def sign_up
+    if @user.valid?
+      pay_via_stripe
+      if pay_successful? && @user.save
+        deal_with_invitation
+        send_regisiter_success_email
+
+        @status = :success
+        self
+      else
+        @status = :error
+        @error_message = "user information is valid"
+        self
+      end
+    elsif
+      @status = :error
+      @error_message = "user information is invalid"
+      self
+
+    end
+  end
 
   def pay_via_stripe
     @stripe_response = StripeWrapper::Charge.create(
