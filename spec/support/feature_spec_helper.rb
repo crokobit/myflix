@@ -1,5 +1,5 @@
 
-  def sign_in(a_user=nil)
+  def sign_in(a_user = nil)
     user = a_user || Fabricate(:user)
     visit root_path
     click_link "Sign In"

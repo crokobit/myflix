@@ -14,7 +14,7 @@ Stripe.setPublishableKey("#{ENV["STRIPE_PUBLISHABLE_KEY"]}");
           %h1 Register
         %fieldset
           %p.payment-errors
-          = hidden_field_tag 'token', @invite_user.try(:token)
+          = hidden_field_tag 'invite_token', @invite_user.try(:token)
           = f.email_field :email, label: "Email Address"
           = f.password_field :password
           = f.text_field :name, label: "Full Name"

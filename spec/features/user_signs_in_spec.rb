@@ -15,6 +15,10 @@ feature "user signs in" do
     fill_in 'Full Name', with: user.name
     fill_in_with_valid_card
     click_button "Sign Up"
+    expect(page).to have_content "Unlimited Movies"
+    #sign in will fail without code above
+    #https://github.com/jnicklas/capybara#asynchronous-javascript-ajax-and-friends
+    sign_in(user)
     expect(page).to have_content user.name
     #below test will fail without code above
     #https://github.com/jnicklas/capybara#asynchronous-javascript-ajax-and-friends

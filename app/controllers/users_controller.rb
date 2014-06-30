@@ -13,19 +13,15 @@ class UsersController < ApplicationController
   end
   def create
     @user = User.new(user_param)
-    token = params[:stripeToken]
+    service = SignUpService.new(@user, params[:invite_token], params[:stripeToken])
 
     if @user.valid?
-      stripe_response = StripeWrapper::Charge.create(
-        :amount => 1000, # amount in cents, again
-        :card => token
-      )
-      if stripe_response.successful? && @user.save
-        session[:user_id] = @user.id
-        deal_with_invitation unless invitor.nil?
+      service.pay_via_stripe
+      if service.pay_successful? && @user.save
+        service.deal_with_invitation
 
 
-        AppMailer.delay.notify_on_regisiter(current_user.id)
+        service.send_regisiter_success_email
         redirect_to videos_path
       else
         render :new
@@ -57,16 +53,7 @@ class UsersController < ApplicationController
 
 
   private
-  def deal_with_invitation
-    invite_user = InviteUser.find_by(token: params[:token])
-    @user.following_each_other_with(invitor)
-    InviteUser.destroy_all_invitations_to(invite_user.recipient_email)
-  end
   def user_param
     params.require(:user).permit(:name, :password, :email)
-  end
-  def invitor
-    invite_user = InviteUser.find_by(token: params[:token])
-    invite_user.try(:invitor)
   end
 end

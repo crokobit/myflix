@@ -86,7 +86,7 @@ describe UsersController do
           password: Faker::Internet.password,
           email: invite_user.recipient_email
         } 
-        post :create, user: new_user_attributes, token: invite_user.token
+        post :create, user: new_user_attributes, invite_token: invite_user.token
         new_user = User.find_by(email: invite_user.recipient_email)
         expect(InviteUser.where(recipient_email: invite_user.recipient_email).count).to be 0 
       end
@@ -97,7 +97,7 @@ describe UsersController do
           password: Faker::Internet.password,
           email: invite_user.recipient_email
         } 
-        post :create, user: new_user_attributes, token: invite_user.token
+        post :create, user: new_user_attributes, invite_token: invite_user.token
         new_user = User.find_by(email: invite_user.recipient_email)
         expect(user.following_users).to include new_user
         expect(user.followed_me_users).to include new_user

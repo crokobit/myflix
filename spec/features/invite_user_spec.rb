@@ -30,18 +30,9 @@ feature "invite user" do
     fill_in_with_valid_card
     click_button "Sign Up"
 
-
-    expect(page).to have_content @user.name
-    #if this test pass, we can sure that new user already sign in.
-
-    # I am sure that it already sign in here in browser, however test here do not sign in. Inorder to pass this test, add below line:
     sign_in(@user)
-    #WHY???
 
     visit '/people'
-    #save_and_open_page
-    #however, error message shows that new user did not sign in in this line!! WHY ??
-
     expect_followed_user_to_be_in_the_queue(@invitor)
   end
 
