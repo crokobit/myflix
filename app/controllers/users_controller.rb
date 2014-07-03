@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_param)
-    service = SignUpService.new(@user, params[:invite_token], params[:stripeToken]).sign_up
+    service = SignUpService.new(@user, params[:stripeToken], params[:invite_token]).sign_up
 
     if service.status == :success
       redirect_to videos_path

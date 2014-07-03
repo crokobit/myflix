@@ -1,6 +1,6 @@
 class SignUpService
   attr_reader :status, :error_message
-  def initialize(user, invite_token, stripe_token)
+  def initialize(user, stripe_token, invite_token)
     @user = user
     @invite_token = invite_token
     @invitor = invitor
@@ -22,7 +22,7 @@ class SignUpService
         @error_message = "user information is valid"
         self
       end
-    elsif
+    else
       @status = :error
       @error_message = "user information is invalid"
       self
