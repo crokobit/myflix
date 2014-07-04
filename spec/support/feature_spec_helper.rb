@@ -24,3 +24,22 @@
     select '2015', from: "date_year"
   end
 
+  def fill_in_with_invalid_card
+    fill_in 'Credit Card Number', with:"4242424242424241"
+    fill_in 'Security Code', with: "222"
+    select '6 - June', from: "date_month"
+    select '2015', from: "date_year"
+  end
+
+  def fill_in_with_declined_card
+    fill_in 'Credit Card Number', with:"4000000000000002"
+    fill_in 'Security Code', with: "222"
+    select '6 - June', from: "date_month"
+    select '2015', from: "date_year"
+  end
+
+  def fill_in_user_information(user)
+    fill_in 'Email Address', with: user.email
+    fill_in 'Password', with: user.password
+    fill_in 'Full Name', with: user.name
+  end

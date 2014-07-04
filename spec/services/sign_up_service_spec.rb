@@ -3,22 +3,22 @@ require 'spec_helper'
 describe SignUpService do
   let(:user) { Fabricate(:user) } 
 
-  describe "users#create#mailer" do
+  describe "mailer" do
     before do
       stripe_response = double(:stripe_response, successful?: true)
       StripeWrapper::Charge.stub(:create).and_return(stripe_response)
     end
-    it "sends email to user" do
+    it "sends email to user when sign up successfully" do
       SignUpService.new(user, "test", nil).sign_up
       expect(ActionMailer::Base.deliveries).to_not be_empty
     end
-    it "sends to user's email" do
+    it "sends to user's email when sign up successfully" do
       SignUpService.new(user, "test", nil).sign_up
       expect(ActionMailer::Base.deliveries.last.to).to eq [user.email]
     end
   end
 
-  describe "users#create" do
+  describe "create user" do
     context "valid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true)

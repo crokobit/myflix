@@ -19,7 +19,7 @@ class SignUpService
         self
       else
         @status = :error
-        @error_message = "user information is valid"
+        @error_message = "user information is valid but card is invalid"
         self
       end
     else
