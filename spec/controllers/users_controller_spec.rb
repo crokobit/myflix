@@ -77,9 +77,7 @@ describe UsersController do
         token = double(:token, successful?: true)
         StripeWrapper::Charge.stub(:create).and_return(token)
       end
-      it "create user successful after retry" do
-        # I don;t know how to test this
-      end
+      it "create user successful after retry"
     end
   end
 
