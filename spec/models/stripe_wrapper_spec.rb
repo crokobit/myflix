@@ -1,6 +1,30 @@
 require 'spec_helper'
 
 describe StripeWrapper do
+  let(:valid_stripe_token) do
+    Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
+    Stripe::Token.create(
+      card: {
+        number: "4242424242424242",
+        exp_month: 6,
+        exp_year: 2015,
+        cvc: "314"
+      }
+    ).id
+  end
+
+  let(:card_declined_stripe_token) do
+    Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
+    Stripe::Token.create(
+      card: {
+        number: "4000000000000002",
+        exp_month: 6,
+        exp_year: 2015,
+        cvc: "314"
+      }
+    ).id
+  end
+
   describe "charge with valid card" , :vcr do
     before do
       token = valid_stripe_token
