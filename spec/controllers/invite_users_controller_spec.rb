@@ -20,7 +20,7 @@ describe InviteUsersController do
     context "require login" do
       let(:user) {Fabricate(:user)}
       before do
-        InviteUser.delete_all
+        #InviteUser.delete_all
         #WHY ?????
         set_current_user
         @invitor = user

@@ -19,7 +19,6 @@ feature "add video" do
     sign_out
     sign_in
     click_video(1)
-    save_and_open_page
     expect(page).to have_selector "img[src='/uploads/video/large_cover/1/monk_large.jpg']"
     expect(page).to have_selector "a[href='#{video.url}']"
   end

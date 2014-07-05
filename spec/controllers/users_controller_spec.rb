@@ -11,24 +11,37 @@ describe UsersController do
     end
   end
 
-  describe "users#create#mailer" do
+
+  describe "users#create refactor by service object" do
     before do
-      post :create,user: { name: "crokobit", password: "pw", email: "cererkobit@gmail.com" }
+      stripe_response = double(:stripe_response, successful?: true)
+      StripeWrapper::Charge.stub(:create).and_return(stripe_response)
     end
-    it "sends email to user" do
-      expect(ActionMailer::Base.deliveries).to_not be_empty
+    context "sign in success" do
+      it "redirects to videos_path" do
+        result = double(:sign_up_service, status: :success)
+        SignUpService.any_instance.should_receive(:sign_up).and_return(result)
+        post :create, user: Fabricate.attributes_for(:user)
+        expect(response).to redirect_to videos_path
+      end
     end
-    it "sends to user's email" do
-      expect(ActionMailer::Base.deliveries.last.to).to eq ["cererkobit@gmail.com"]
+    context "sign in fail" do
+      it "renders :new" do
+        result = double(:sign_up_service, status: :error, error_message: "TEST")
+        SignUpService.any_instance.should_receive(:sign_up).and_return(result)
+        #SignUpService.stub(:sign_up).and_return(result)
+        post :create, user: Fabricate.attributes_for(:invalid_user)
+        expect(response).to render_template :new
+      end      
     end
   end
+
   
   describe "users#create" do
-    context "user data pass validation" do
-      it "saves user to db" do
-        expect{
-          post :create,user: Fabricate.attributes_for(:user)
-        }.to change(User, :count).by(1)
+    context "valid user information and valid card information" do
+      before do
+        stripe_response = double(:stripe_response, successful?: true)
+        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
       end
       it "redirects to videos_path" do
         post :create,user: { name: "crokobit", password: "pw", email: "crokobit@fdf.ef" }
@@ -36,40 +49,35 @@ describe UsersController do
       end
     end
 
-    context "create user through invite" do
-      it "destroys all InviteUser link inviting the user" do
-        invite_user = Fabricate(:invite_user, invitor: user)
-        new_user_attributes = {
-          name: Faker::Name.name,
-          password: Faker::Internet.password,
-          email: invite_user.recipient_email
-        } 
-        post :create, user: new_user_attributes, token: invite_user.token
-        new_user = User.find_by(email: invite_user.recipient_email)
-        expect(InviteUser.where(recipient_email: invite_user.recipient_email).count).to be 0 
+    context "invalid user information and valid card information" do
+      before do
+        stripe_response = double(:stripe_response, successful?: true)
+        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
       end
-      it "sets follow each other relationship" do
-        invite_user = Fabricate(:invite_user, invitor: user)
-        new_user_attributes = {
-          name: Faker::Name.name,
-          password: Faker::Internet.password,
-          email: invite_user.recipient_email
-        } 
-        post :create, user: new_user_attributes, token: invite_user.token
-        new_user = User.find_by(email: invite_user.recipient_email)
-        expect(user.following_users).to include new_user
-        expect(user.followed_me_users).to include new_user
-      end
-      it "create user successfully after retry" do
-        # I don;t know how to test this
-      end
-    end
-
-    context "user data does not pass validation" do
       it "renders :new" do
         post :create ,user: Fabricate.attributes_for(:invalid_user)
         expect(response).to render_template :new 
       end
+    end
+
+    context "valid user information and invalid card information" do
+      before do
+        stripe_response = double(:stripe_response, successful?: false)
+        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+      end
+      it "render :new" do
+        post :create,user: Fabricate.attributes_for(:user)
+        expect(response).to render_template :new 
+      end
+      
+    end
+
+    context "create user through invite with valid card" do
+      before do
+        token = double(:token, successful?: true)
+        StripeWrapper::Charge.stub(:create).and_return(token)
+      end
+      it "create user successful after retry"
     end
   end
 

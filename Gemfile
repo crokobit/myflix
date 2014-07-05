@@ -18,6 +18,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem "figaro"
 gem 'stripe'
+gem 'draper'
 
 group :development do
   gem 'sqlite3'
@@ -37,6 +38,14 @@ group :test, :development do
   gem "database_cleaner"
   gem "launchy"
   gem 'capybara-email'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem "capybara-webkit"
+end
+
+group :test do
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :test, :development, :production do

@@ -64,7 +64,6 @@ describe QueuesController do
     it_behaves_like "require_sign_in" do
       let(:action) {
         queue_item = Fabricate(:queue_item_same_user, user: user) 
-        # WHY can not use obj defined by let(:queue_item)
         delete :destroy, id: queue_item
       }
     end

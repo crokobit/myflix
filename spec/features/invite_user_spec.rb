@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 feature "invite user" do
+  before do
+    # using  scenario {js: true, vcr: true} will have following failing message. 1. can not find link "Sign Out". 2. can not find "Email Address"
+    # Maybe it is problem about async js.
+    #
+    stripe_response = double(:stripe_response, successful?: true)
+    StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+  end
   scenario "invite user" do
     @invitor = Fabricate(:user)   
     @user = Fabricate.build(:user)
@@ -9,15 +16,21 @@ feature "invite user" do
     fill_in "Friend's Email Address", with: @user.email
     fill_in "Friend's Name", with: @user.name
     click_button "Send Invitation"
-
+    sign_out
+  
     open_email(@user.email)
     current_email.click_link("invitation")
     
-    fill_in 'Email Address', with: @user.email
+
+    expect(page).to have_content("Email Address")
+    
+    
     fill_in 'Password', with: @user.password
     fill_in 'Full Name', with: @user.name
+    fill_in_with_valid_card
     click_button "Sign Up"
 
+    sign_in(@user)
 
     visit '/people'
     expect_followed_user_to_be_in_the_queue(@invitor)

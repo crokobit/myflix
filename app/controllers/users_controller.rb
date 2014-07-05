@@ -11,29 +11,18 @@ class UsersController < ApplicationController
     @user = User.new(email: @invite_user.recipient_email)
     render '_form_partial'
   end
+
   def create
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-    token = params[:stripeToken]
-    
     @user = User.new(user_param)
-    if @user.save
-      session[:user_id] = @user.id
-      deal_with_invitation unless invitor.nil?
+    service = SignUpService.new(@user, params[:stripeToken], params[:invite_token]).sign_up
 
-      if token
-        charge = Stripe::Charge.create(
-          :amount => 1000, # amount in cents, again
-          :currency => "usd",
-          :card => token,
-          :description => "payinguser@example.com"
-        )
-      end
-
-      AppMailer.delay.notify_on_regisiter(current_user.id)
+    if service.status == :success
       redirect_to videos_path
     else
+      flash[:alert] = service.error_message
       render :new
     end
+    
   end
 
   def show
@@ -57,16 +46,7 @@ class UsersController < ApplicationController
 
 
   private
-  def deal_with_invitation
-    invite_user = InviteUser.find_by(token: params[:token])
-    @user.following_each_other_with(invitor)
-    InviteUser.destroy_all_invitations_to(invite_user.recipient_email)
-  end
   def user_param
     params.require(:user).permit(:name, :password, :email)
-  end
-  def invitor
-    invite_user = InviteUser.find_by(token: params[:token])
-    invite_user.try(:invitor)
   end
 end

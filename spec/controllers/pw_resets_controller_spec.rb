@@ -57,7 +57,7 @@ describe PwResetsController do
     let(:user) { Fabricate(:user) }
     context "pw valid" do
       before do
-        User.all.map(&:destroy)
+        #User.all.map(&:destroy)
         #WHY QQQQQQ
         user.create_pw_reset
         user.reload
