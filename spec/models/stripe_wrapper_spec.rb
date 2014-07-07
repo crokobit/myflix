@@ -25,34 +25,58 @@ describe StripeWrapper do
     ).id
   end
 
-  describe "charge with valid card" , :vcr do
-    before do
-      token = valid_stripe_token
+  context "class Charge" do
+    describe "charge with valid card" , :vcr do
+      before do
+        token = valid_stripe_token
 
-      @charge = StripeWrapper::Charge.create(
-        card: token,
-        amount: 100
-      )
+        @charge = StripeWrapper::Charge.create(
+          card: token,
+          amount: 100
+        )
+      end
+      it "charges succesfully" do
+        expect(@charge.successful?).to be_true
+      end
+      it "sets currency usd" do
+        expect(@charge.response.currency).to eq "usd"
+      end
     end
-    it "charges succesfully" do
-      expect(@charge.successful?).to be_true
-    end
-    it "set currency usd" do
-      expect(@charge.response.currency).to eq "usd"
+
+    describe "charge with declined card" , :vcr do
+      before do
+        token = card_declined_stripe_token
+
+        @charge = StripeWrapper::Charge.create(
+          card: token,
+          amount: 100
+        )
+      end
+      it "charges succesfully" do
+        expect(@charge.successful?).to be_false
+      end
+      it "has error messsage" do
+        expect(@charge.error_message).to eq "Your card was declined."
+      end
     end
   end
 
-  describe "charge with invalid card" , :vcr do
-    before do
-      token = card_declined_stripe_token
-
-      @charge = StripeWrapper::Charge.create(
-        card: token,
-        amount: 100
-      )
+  context "class Customer", :vcr do
+    let(:customer) { Fabricate(:user) }
+    it "charges customer success with valid card" do
+      token = valid_stripe_token
+      @subscription = StripeWrapper::Customer.create(customer, token)
+      expect(@subscription.successful?).to be_true
     end
-    it "charges succesfully" do
-      expect(@charge.successful?).to be_false
+    it "charges customer fail with declined card" do
+      token = card_declined_stripe_token
+      @subscription = StripeWrapper::Customer.create(customer, token)
+      expect(@subscription.successful?).to be_false
+    end
+    it "show error message when card declined" do
+      token = card_declined_stripe_token
+      @subscription = StripeWrapper::Customer.create(customer, token)
+      expect(@subscription.error_message).to eq "Your card was declined."
     end
   end
 end
