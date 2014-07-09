@@ -40,5 +40,5 @@ Myflix::Application.routes.draw do
   resources :invite_users
   get '/send_invite_email', to: 'invite_users#new'
 
-
+  mount StripeEvent::Engine => '/stripe' # provide a custom path
 end

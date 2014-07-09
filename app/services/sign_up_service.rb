@@ -11,9 +11,13 @@ class SignUpService
   def sign_up
     if @user.valid?
       pay_via_stripe
+      #@stripe_response = StripeWrapper::Customer.create(@user, )
       if pay_successful? && @user.save
         deal_with_invitation
         send_regisiter_success_email
+        @user.customer_token = @stripe_response.customer_token
+        @user.save
+
 
         @status = :success
         self

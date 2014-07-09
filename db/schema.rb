@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609145905) do
+ActiveRecord::Schema.define(version: 20140709093532) do
 
   create_table "categories", force: true do |t|
     t.string "name"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20140609145905) do
     t.string   "token"
     t.string   "recipient_name"
     t.string   "recipient_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "payments", force: true do |t|
+    t.string   "reference_id"
+    t.integer  "amount"
+    t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -61,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140609145905) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin"
+    t.string   "customer_token"
   end
 
   create_table "videos", force: true do |t|

@@ -5,7 +5,7 @@ describe SignUpService do
 
   describe "mailer" do
     before do
-      stripe_response = double(:stripe_response, successful?: true)
+      stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
       StripeWrapper::Charge.stub(:create).and_return(stripe_response)
     end
     it "sends email to user when sign up successfully" do
@@ -21,13 +21,17 @@ describe SignUpService do
   describe "create user" do
     context "valid user information and valid card information" do
       before do
-        stripe_response = double(:stripe_response, successful?: true)
+        stripe_response = double(:stripe_response, successful?: true, customer_token: "asdf")
         StripeWrapper::Charge.stub(:create).and_return(stripe_response)
       end
       it "saves user data to db" do
         expect{
           SignUpService.new(user, "test", nil).sign_up
         }.to change(User, :count).by(1)
+      end
+      it "saves stripe customer_token" do
+        SignUpService.new(user, "test", nil).sign_up
+        expect(User.first.customer_token).to eq "asdf"
       end
     end
 
@@ -59,8 +63,8 @@ describe SignUpService do
 
     context "create user through invite with valid card" do
       before do
-        token = double(:token, successful?: true)
-        StripeWrapper::Charge.stub(:create).and_return(token)
+        token = double(:token, successful?: true, customer_token: "SS")
+        StripeWrapper::Customer.stub(:create).and_return(token)
       end
       it "destroys all InviteUser link inviting the user" do
         invite_user = Fabricate(:invite_user, invitor: user)

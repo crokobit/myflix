@@ -40,7 +40,7 @@ describe UsersController do
   describe "users#create" do
     context "valid user information and valid card information" do
       before do
-        stripe_response = double(:stripe_response, successful?: true)
+        stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
         StripeWrapper::Charge.stub(:create).and_return(stripe_response)
       end
       it "redirects to videos_path" do

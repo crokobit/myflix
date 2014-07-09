@@ -78,5 +78,10 @@ describe StripeWrapper do
       @subscription = StripeWrapper::Customer.create(customer, token)
       expect(@subscription.error_message).to eq "Your card was declined."
     end
+    it "returns customer_token to user with valid card" do
+      token = valid_stripe_token
+      @subscription = StripeWrapper::Customer.create(customer, token)
+      expect(@subscription.customer_token).to be_present
+    end
   end
 end
