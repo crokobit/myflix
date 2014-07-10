@@ -6,7 +6,7 @@ describe SignUpService do
   describe "mailer" do
     before do
       stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
-      StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+      StripeWrapper::Customer.stub(:create).and_return(stripe_response)
     end
     it "sends email to user when sign up successfully" do
       SignUpService.new(user, "test", nil).sign_up
@@ -22,7 +22,7 @@ describe SignUpService do
     context "valid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true, customer_token: "asdf")
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "saves user data to db" do
         expect{
@@ -38,10 +38,10 @@ describe SignUpService do
     context "invalid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true)
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "should have no charge" do
-        StripeWrapper::Charge.should_not_receive(:create)
+        StripeWrapper::Customer.should_not_receive(:create)
         SignUpService.new(Fabricate.build(:invalid_user), "test", nil).sign_up
       end
     end
@@ -49,7 +49,7 @@ describe SignUpService do
     context "valid user information and invalid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: false)
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "do not create user" do
         @user = Fabricate(:user)

@@ -15,7 +15,7 @@ describe UsersController do
   describe "users#create refactor by service object" do
     before do
       stripe_response = double(:stripe_response, successful?: true)
-      StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+      StripeWrapper::Customer.stub(:create).and_return(stripe_response)
     end
     context "sign in success" do
       it "redirects to videos_path" do
@@ -41,7 +41,7 @@ describe UsersController do
     context "valid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "redirects to videos_path" do
         post :create,user: { name: "crokobit", password: "pw", email: "crokobit@fdf.ef" }
@@ -52,7 +52,7 @@ describe UsersController do
     context "invalid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true)
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "renders :new" do
         post :create ,user: Fabricate.attributes_for(:invalid_user)
@@ -63,7 +63,7 @@ describe UsersController do
     context "valid user information and invalid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: false)
-        StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+        StripeWrapper::Customer.stub(:create).and_return(stripe_response)
       end
       it "render :new" do
         post :create,user: Fabricate.attributes_for(:user)
@@ -75,7 +75,7 @@ describe UsersController do
     context "create user through invite with valid card" do
       before do
         token = double(:token, successful?: true)
-        StripeWrapper::Charge.stub(:create).and_return(token)
+        StripeWrapper::Customer.stub(:create).and_return(token)
       end
       it "create user successful after retry"
     end
