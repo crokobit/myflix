@@ -12,4 +12,10 @@ feature "user signs in" do
     expect(page).to_not have_content @user.name
     expect(page).to have_content "user was deactived"
   end
+  scenario "with invalid username and password, deactived user", :js do
+    @user = Fabricate(:user, active: false)
+    sign_in_with_empty_password(@user)
+    expect(page).to_not have_content @user.name
+    expect(page).to have_content "Login fail"
+  end
 end

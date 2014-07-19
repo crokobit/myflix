@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
 
   def create
     user = User.where(email: params[:email]).first
-    if user && user.active == false
+    if user && user.authenticate(params[:password]) && user.active == false
       flash[:danger] = "user was deactived"
       redirect_to login_path
     elsif user && user.authenticate(params[:password])
