@@ -37,17 +37,31 @@ describe SessionsController do
       end
     end
 
-    describe "sessions#destroy" do
-      before(:each) do
-        set_current_user
-        delete :destroy
+    context "valid user data but is deactive" do
+      before do
+        user_deactived = Fabricate(:user, active: false)
+        post :create, email: user_deactived.email, password: user_deactived.password
+
       end
-      it "logs out" do
-        expect(session[:user_id]).to be_nil 
+      it "redirects to login path" do
+        expect(response).to redirect_to login_path
       end
-      it "redirects to root_path" do
-        expect(response).to redirect_to root_path
+      it "flash alert message" do
+        expect(flash[:danger]).to eq "user was deactived"
       end
+    end
+  end
+
+  describe "sessions#destroy" do
+    before(:each) do
+      set_current_user
+      delete :destroy
+    end
+    it "logs out" do
+      expect(session[:user_id]).to be_nil 
+    end
+    it "redirects to root_path" do
+      expect(response).to redirect_to root_path
     end
   end
 end
