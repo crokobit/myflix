@@ -5,6 +5,7 @@ StripeEvent.configure do |events|
     customer = User.find_by(customer_token: event["data"]["object"]["card"]["customer"])
     AppMailer.delay.notify_customer_failed_subscription(@customer_token)
     customer.destroy
+    # need to change to deactive
   end
 
   events.subscribe 'charge.succeeded' do |event|

@@ -49,4 +49,13 @@ class User < ActiveRecord::Base
   def is_admin?
     admin
   end
+
+  def deactive!
+    # active = false  # error~ WHY?
+    self.active = false
+  end
+
+  def active!
+    self.active = true
+  end
 end
