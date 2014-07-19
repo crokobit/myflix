@@ -18,5 +18,10 @@ class AppMailer < ActionMailer::Base
     mail to: @invite_user.recipient_email,subject: "invitation"
   end
 
+  def notify_customer_failed_subscription(customer_token)
+    @customer = User.find_by(customer_token: customer_token)
+    mail to: @customer.email, subject: "charge.failed"
+  end
+
 
 end

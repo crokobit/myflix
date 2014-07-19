@@ -5,8 +5,8 @@ feature "invite user" do
     # using  scenario {js: true, vcr: true} will have following failing message. 1. can not find link "Sign Out". 2. can not find "Email Address"
     # Maybe it is problem about async js.
     #
-    stripe_response = double(:stripe_response, successful?: true)
-    StripeWrapper::Charge.stub(:create).and_return(stripe_response)
+    stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
+    StripeWrapper::Customer.stub(:create).and_return(stripe_response)
   end
   scenario "invite user" do
     @invitor = Fabricate(:user)   

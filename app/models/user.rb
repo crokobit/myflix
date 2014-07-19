@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_one :pw_reset
   has_many :invite_users
 
+  has_many :payments
+
   def have_pw_reset?
     !!pw_reset
   end
