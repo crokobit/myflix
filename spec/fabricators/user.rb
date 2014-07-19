@@ -11,3 +11,4 @@ Fabricator(:invalid_user, from: :user)  do
   password ""
   admin false
 end
+

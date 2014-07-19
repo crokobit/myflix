@@ -31,6 +31,7 @@
 # news.videos << video7
 # news.videos << video8
 
+
 sport = Fabricate(:category, name: "sport")
 news = Fabricate(:category, name: "news")
 grammer = Fabricate(:category, name: "grammer")
