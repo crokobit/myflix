@@ -13,6 +13,23 @@ StripeEvent.configure do |events|
     customer = User.find_by(customer_token: event["data"]["object"]["card"]["customer"])
     Payment.create(reference_id: event["data"]["object"]["id"], customer: customer) 
   end
+
+  events.subscribe 'invoice.payment_succeeded' do |event|
+    payment = Payment.find_by(reference_id: event["data"]["object"]["charge"])
+    payment.start_time = invoice_payment_succeeded_start_time(event)
+    payment.end_time = invoice_payment_succeeded_end_time(event)
+    payment.cancel_at_period_end = false
+    payment.save
+  end
+
   events.all do |event|
+  end
+
+  def invoice_payment_succeeded_start_time(event)
+    event["data"]["object"]["lines"]["data"][0]["period"]["start"]
+  end
+
+  def invoice_payment_succeeded_end_time(event)
+    event["data"]["object"]["lines"]["data"][0]["period"]["end"]
   end
 end

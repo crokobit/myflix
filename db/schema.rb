@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709093532) do
+ActiveRecord::Schema.define(version: 20140721141852) do
 
   create_table "categories", force: true do |t|
     t.string "name"
@@ -38,6 +38,9 @@ ActiveRecord::Schema.define(version: 20140709093532) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.boolean  "cancel_at_period_end"
   end
 
   create_table "pw_resets", force: true do |t|
@@ -70,6 +73,7 @@ ActiveRecord::Schema.define(version: 20140709093532) do
     t.datetime "updated_at"
     t.boolean  "admin"
     t.string   "customer_token"
+    t.boolean  "active"
   end
 
   create_table "videos", force: true do |t|

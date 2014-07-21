@@ -72,4 +72,12 @@ module StripeWrapper
   def self.set_api_key
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
   end
+
+  def cancel_subscription
+    
+  end
+
+  def resubscription
+    
+  end
 end

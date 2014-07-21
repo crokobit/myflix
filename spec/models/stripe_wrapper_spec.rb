@@ -61,7 +61,7 @@ describe StripeWrapper do
     end
   end
 
-  context "class Customer", :vcr do
+  context "Class Customer", :vcr do
     let(:customer) { Fabricate(:user) }
     it "charges customer success with valid card" do
       token = valid_stripe_token
