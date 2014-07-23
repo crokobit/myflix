@@ -82,12 +82,14 @@ describe "invoice.payment_succeeded event" do
     }
   end
   before do
-    @payment = Payment.create(reference_id: "ch_14IfSv4zdTxaHvAkH1ue8la5", customer_id: "cus_4RYalEj74BTkoc", amount: "2000")
+    @payment = Payment.create(reference_id: "ch_14IfSv4zdTxaHvAkH1ue8la5", customer: Fabricate(:user), amount: "2000")
   end
-  it "saves period duration data to Payment", :vcr  do
+  it "saves data to Payment", :vcr  do
     post '/stripe', invoice_payment_succeeded_event_data
     expect(Payment.first.start_time).to eq 1405944025
     expect(Payment.first.end_time).to eq 1408622425
     expect(Payment.first.cancel_at_period_end).to be_false
+    expect(Payment.first.subscription_id).to eq "sub_4RYaIXR0qKYWEc"
+    expect(Event.first.event).to eq "invoice.payment_succeeded"
   end
 end

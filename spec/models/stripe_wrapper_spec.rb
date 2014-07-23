@@ -65,23 +65,23 @@ describe StripeWrapper do
     let(:customer) { Fabricate(:user) }
     it "charges customer success with valid card" do
       token = valid_stripe_token
-      @subscription = StripeWrapper::Customer.create(customer, token)
-      expect(@subscription.successful?).to be_true
+      @customer = StripeWrapper::Customer.create(customer, token)
+      expect(@customer.successful?).to be_true
     end
     it "charges customer fail with declined card" do
       token = card_declined_stripe_token
-      @subscription = StripeWrapper::Customer.create(customer, token)
-      expect(@subscription.successful?).to be_false
+      @customer = StripeWrapper::Customer.create(customer, token)
+      expect(@customer.successful?).to be_false
     end
     it "show error message when card declined" do
       token = card_declined_stripe_token
-      @subscription = StripeWrapper::Customer.create(customer, token)
-      expect(@subscription.error_message).to eq "Your card was declined."
+      @customer = StripeWrapper::Customer.create(customer, token)
+      expect(@customer.error_message).to eq "Your card was declined."
     end
     it "returns customer_token to user with valid card" do
       token = valid_stripe_token
-      @subscription = StripeWrapper::Customer.create(customer, token)
-      expect(@subscription.customer_token).to be_present
+      @customer = StripeWrapper::Customer.create(customer, token)
+      expect(User.first.customer_token).to be_present
     end
   end
 end

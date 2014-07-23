@@ -29,7 +29,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 21 Jul 2014 20:53:49 GMT
+      - Tue, 22 Jul 2014 02:18:35 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -128,5 +128,5 @@ http_interactions:
           "request": "iar_4RYa5sc3j1Zx4M"
         }
     http_version: 
-  recorded_at: Mon, 21 Jul 2014 20:53:49 GMT
+  recorded_at: Tue, 22 Jul 2014 02:18:34 GMT
 recorded_with: VCR 2.9.2

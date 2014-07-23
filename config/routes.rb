@@ -45,4 +45,9 @@ Myflix::Application.routes.draw do
   end
 
   mount StripeEvent::Engine => '/stripe' # provide a custom path
+
+  resources :plan_and_billings, only: [:index]
+
+  get '/cancel_subscription', to: 'plan_and_billings#cancel_subscription'
+  get '/reactive_subscription', to: 'plan_and_billings#reactive_subscription'
 end

@@ -1,0 +1,39 @@
+%section.billing.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      .plan_and_payments
+        %section.plan
+          %header
+            %h1 Billing
+          %table.table
+            %thead
+              %tr
+                %th
+                %th Next Billing Date
+                %th Price
+            %tbody
+              %tr
+                %td Gold Plan
+                %td= Time.at(@payments.last.end_time)
+                %td 9.99 per month
+        - if @payments.last.subscription_active
+          = button_to "Cancel Service", cancel_subscription_path, class: "btn btn-default", method: :get
+        - else
+          = button_to "reactive Service", reactive_subscription_path, class: "btn btn-default", method: :get
+
+        %section.payment_history
+          %header
+            %h3 Payment History
+          %table.table
+            %thead
+              %tr
+                %th Date
+                %th Service Duration
+                %th Total
+            %tbody
+              - @payments.each do |payment|
+                %tr
+                  %td= Time.at(payment.start_time)
+                  %td= "#{Time.at(payment.start_time)} ~ #{Time.at(payment.end_time)}" 
+                  %td= "$#{payment.amount}"
+

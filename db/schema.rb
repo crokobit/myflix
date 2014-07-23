@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721141852) do
+ActiveRecord::Schema.define(version: 20140722015542) do
 
   create_table "categories", force: true do |t|
     t.string "name"
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "event"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "follow_relationships", force: true do |t|
@@ -41,6 +47,8 @@ ActiveRecord::Schema.define(version: 20140721141852) do
     t.time     "start_time"
     t.time     "end_time"
     t.boolean  "cancel_at_period_end"
+    t.string   "subscription_id"
+    t.boolean  "subscription_active"
   end
 
   create_table "pw_resets", force: true do |t|
