@@ -13,7 +13,7 @@ class PlanAndBillingsController < ApplicationController
   end
 
   def reactive_subscription
-    StripeWrapper::Customer.re_subscription(current_user)
+    StripeWrapper::Customer.reactive_subscription(current_user)
     @payments = Payment.where(customer: current_user)
     @payments.last.subscription_active = true
     @payments.last.save

@@ -2,6 +2,9 @@ require 'spec_helper'
 describe PlanAndBillingsController  do
   let(:user) {Fabricate(:user)}
   context "cancel_subscription" do
+    before do
+      StripeWrapper::Customer.stub(:cancel_subscription)
+    end
     it "deactive payment" do
       set_current_user
       Payment.create(customer: user, subscription_active: false) 
@@ -15,6 +18,9 @@ describe PlanAndBillingsController  do
   end
 
   context "reactive_subscription" do
+    before do
+      StripeWrapper::Customer.stub(:reactive_subscription)
+    end
     it "deactive payment" do
       set_current_user
       Payment.create(customer: user, subscription_active: false) 

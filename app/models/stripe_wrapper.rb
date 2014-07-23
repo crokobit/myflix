@@ -69,12 +69,12 @@ module StripeWrapper
       payment.save
     end
 
-    def self.re_subscription(customer)
+    def self.reactive_subscription(customer)
       customer_response = Stripe::Customer.retrieve(customer.customer_token)
       payment = Payment.where(customer: customer).last
       subscription_id = payment.subscription_id
 
-      #reactive_subscription(customer_response, subscription_id)
+      #reactive_subscription_procedure(customer_response, subscription_id)
       subscription = customer_response.subscriptions.retrieve(subscription_id)
       subscription.plan = "gold"
       subscription.save
@@ -91,7 +91,7 @@ module StripeWrapper
     def customer_token
       @response.id 
     end
-    def reactive_subscription(customer_response, subscription_id)
+    def reactive_subscription_procedure(customer_response, subscription_id)
     end
   end 
 
