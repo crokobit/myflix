@@ -5,7 +5,7 @@ class PlanAndBillingsController < ApplicationController
   end
 
   def cancel_subscription
-    StripeWrapper::Customer.cancel_subscription(current_user)
+    StripeWrapper::Customer.delay.cancel_subscription(current_user)
     @payments = Payment.where(customer: current_user)
     @payments.last.subscription_active = false
     @payments.last.save
@@ -13,7 +13,7 @@ class PlanAndBillingsController < ApplicationController
   end
 
   def reactive_subscription
-    StripeWrapper::Customer.reactive_subscription(current_user)
+    StripeWrapper::Customer.delay.reactive_subscription(current_user)
     @payments = Payment.where(customer: current_user)
     @payments.last.subscription_active = true
     @payments.last.save
