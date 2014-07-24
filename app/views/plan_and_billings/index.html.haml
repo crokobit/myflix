@@ -14,7 +14,7 @@
             %tbody
               %tr
                 %td Gold Plan
-                %td= Time.at(@payments.last.end_time)
+                %td= @payment.next_billing_date
                 %td 9.99 per month
         - if @payments.last.subscription_active
           = button_to "Cancel Service", cancel_subscription_path, class: "btn btn-default", method: :get
@@ -33,7 +33,7 @@
             %tbody
               - @payments.each do |payment|
                 %tr
-                  %td= Time.at(payment.start_time)
-                  %td= "#{Time.at(payment.start_time)} ~ #{Time.at(payment.end_time)}" 
-                  %td= "$#{payment.amount}"
+                  %td= payment.created_date
+                  %td= payment.duration
+                  %td= payment.amount
 

@@ -1,7 +1,10 @@
 class PlanAndBillingsController < ApplicationController
   before_action :require_user
   def index
-    @payments = Payment.where(customer: current_user)
+    payments = Payment.where(customer: current_user)
+    payment = Payment.where(customer: current_user).last
+    @payment = PaymentDecorator.decorate(payment)
+    @payments = Payment.all.map { |payment| PaymentDecorator.decorate(payment) }
   end
 
   def cancel_subscription
