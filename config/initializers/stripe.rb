@@ -10,9 +10,9 @@ StripeEvent.configure do |events|
   events.subscribe 'charge.succeeded' do |event|
     customer = User.find_by(customer_token: charge_customer_token(event)) 
     Payment.create(
-      reference_id: charge_reference_id, 
+      reference_id: charge_reference_id(event),
       customer: customer, 
-      amount: charge_amount
+      amount: charge_amount(event)
     ) 
   end
 
@@ -51,10 +51,10 @@ StripeEvent.configure do |events|
   def charge_customer_token(event)
     event["data"]["object"]["card"]["customer"]
   end
-  def charge_reference_id
+  def charge_reference_id(event)
     event["data"]["object"]["id"]
   end
-  def charge_amount
+  def charge_amount(event)
     event["data"]["object"]["amount"]
   end
 end
