@@ -2,48 +2,35 @@ Stripe.api_key = ENV['STRIPE_SECRET_KEY'] # Set your api key
 
 StripeEvent.configure do |events|
   events.subscribe 'charge.failed' do |event|
-    customer = User.find_by(customer_token: event["data"]["object"]["card"]["customer"])
+    customer = User.find_by(customer_token: charge_customer_token(event))
     AppMailer.delay.notify_customer_failed_subscription(@customer_token)
     customer.deactive!
-    customer.save(validate: false)
-    # need to change to deactive
-    Event.create(event: event["type"])     
   end
 
   events.subscribe 'charge.succeeded' do |event|
-    customer = User.find_by(customer_token: event["data"]["object"]["card"]["customer"])
-    Payment.create(reference_id: event["data"]["object"]["id"], customer: customer, amount: event["data"]["object"]["amount"]) 
-    Event.create(event: event["type"])     
+    customer = User.find_by(customer_token: charge_customer_token(event)) 
+    Payment.create(
+      reference_id: charge_reference_id, 
+      customer: customer, 
+      amount: charge_amount
+    ) 
   end
 
   events.subscribe 'invoice.payment_succeeded' do |event|
-    payment = Payment.find_by(reference_id: event["data"]["object"]["charge"])
-    payment.start_time = invoice_payment_succeeded_start_time(event)
-    payment.end_time = invoice_payment_succeeded_end_time(event)
-    payment.cancel_at_period_end = false
-    payment.subscription_id = invoice_payment_succeeded_subscription_id(event)
-    payment.subscription_active = true
-    payment.save
-    Event.create(event: event["type"])     
-  end
+    payment = Payment.find_by(reference_id: invoice_payment_reference_id(event))
 
-  events.subscribe 'customer.created' do |event|
-    Event.create(event: event["type"])     
-  end
+    payment.update(
+      start_time: invoice_payment_succeeded_start_time(event),
+      end_time: invoice_payment_succeeded_end_time(event),
+      cancel_at_period_end: false,
+      subscription_id: invoice_payment_succeeded_subscription_id(event),
+      subscription_active: true
+    )
 
-  events.subscribe 'invoice.created' do |event|
-    Event.create(event: event["type"])     
-  end
-
-  events.subscribe 'customer.card.created' do |event|
-    Event.create(event: event["type"])     
-  end
-
-  events.subscribe 'customer.subscription.created' do |event|
-    Event.create(event: event["type"])     
   end
 
   events.all do |event|
+    Event.create(event: event["type"])     
   end
 
   def invoice_payment_succeeded_start_time(event)
@@ -56,5 +43,18 @@ StripeEvent.configure do |events|
 
   def invoice_payment_succeeded_subscription_id(event)
     event["data"]["object"]["lines"]["data"][0]["id"]
+  end
+
+  def invoice_payment_reference_id(event)
+    event["data"]["object"]["charge"]
+  end
+  def charge_customer_token(event)
+    event["data"]["object"]["card"]["customer"]
+  end
+  def charge_reference_id
+    event["data"]["object"]["id"]
+  end
+  def charge_amount
+    event["data"]["object"]["amount"]
   end
 end

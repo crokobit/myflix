@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
   def deactive!
     # active = false  # error~ WHY?
     self.active = false
+    self.save(validate: false)
   end
 
   def active!
