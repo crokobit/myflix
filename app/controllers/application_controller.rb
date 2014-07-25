@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_same_user
-    if params[:id] != current_user.id
+    if  params[:id].to_i != current_user.id
       flash[:danger] = "You must be the same user to do that"
       redirect_to root_path
     end
