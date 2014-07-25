@@ -13,6 +13,8 @@ Myflix::Application.configure do
     enable_starttls_auto: true
   }
 
+  config.assets.precompile += %w( payment.js )
+
   config.action_mailer.default_url_options = { host: 'localhost:3000'}
 
   config.cache_classes = true
