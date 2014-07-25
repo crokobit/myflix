@@ -76,4 +76,19 @@ describe User do
       expect(user.is_admin?).to be_false
     end
   end
+
+  context "deactive!" do
+    it "sets active to true" do
+      user = Fabricate(:user, active: true)
+      user.deactive!
+      expect(user.active).to be_false
+    end
+  end
+  context "active!" do
+    it "sets active to true" do
+      user = Fabricate(:user, active: false)
+      user.active!
+      expect(user.active).to be_true
+    end
+  end
 end

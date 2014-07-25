@@ -1,3 +1,11 @@
+  def sign_in_with_empty_password(a_user = nil)
+    user = a_user || Fabricate(:user)
+    visit root_path
+    click_link "Sign In"
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: ""
+    click_button "Login"
+  end
 
   def sign_in(a_user = nil)
     user = a_user || Fabricate(:user)

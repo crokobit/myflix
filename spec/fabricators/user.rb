@@ -3,6 +3,7 @@ Fabricator(:user)  do
   email { Faker::Internet.email }
   password { Faker::Internet.password }
   admin false
+  active true
 end
 
 Fabricator(:invalid_user, from: :user)  do
@@ -10,5 +11,6 @@ Fabricator(:invalid_user, from: :user)  do
   email { Faker::Internet.email }
   password ""
   admin false
+  active true
 end
 

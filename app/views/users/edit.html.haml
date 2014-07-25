@@ -1,2 +1,14 @@
-= render 'form_partial'
-
+%section.account.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      = bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-4") do |f|
+        %fieldset
+          %header
+            %h1 Your Account
+            = f.email_field :email, label: "Email Address"
+            = f.password_field :password, label: "Password"
+            = f.password_field :password_confirmation, label: "Password Confirmation"
+            = f.text_field :name, label: "Full Name"
+        %fieldset.actions.form-group
+          .col-sm-8.col-lg-offset-3
+            = f.submit "Update", control_col: "col-sm-8"

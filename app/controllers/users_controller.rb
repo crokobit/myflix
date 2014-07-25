@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update]
-  before_action :require_user, only: [:show]
+  before_action :require_user, only: [:show, :edit, :update]
+  before_action :require_same_user, only: [:edit, :update]
 
   def new
-    #binding.pry
     @user = User.new
   end
   def new_user_via_invitation
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     if service.status == :success
       redirect_to videos_path
     else
-      flash[:alert] = service.error_message
+      flash[:danger] = service.error_message
       render :new
     end
     
@@ -32,8 +32,12 @@ class UsersController < ApplicationController
   def edit; end
   
   def update
-    if @user.update(user_param)
+    if password_confirmation? && @user.update(user_param) 
       redirect_to root_path
+      flash[:success] = "update success"
+    elsif password_confirmation? == false
+      flash[:danger] = "password confirmation failed"
+      render :edit
     else
       flash[:danger] = "invalid update"
       render :edit
@@ -46,6 +50,9 @@ class UsersController < ApplicationController
 
 
   private
+  def password_confirmation?
+    params[:user][:password] == params[:user][:password_confirmation] 
+  end
   def user_param
     params.require(:user).permit(:name, :password, :email)
   end

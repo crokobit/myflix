@@ -63,9 +63,9 @@ describe "charge.failed" do
     @customer = Fabricate(:user, customer_token: @customer_token)
     @ee = post '/stripe', failed_event
   end
-  it "destroys that customer", :vcr do
+  it "deactives that customer", :vcr do
     # Why this hit GET https://api.stripe.com/v1/events/evt_14EWDd4zdTxaHvAk19UMjSIi 
-    expect(User.count).to eq 0
+    expect(User.first.active).to be_false
   end
   it "sends a mail to notify customer", :vcr do
     expect(ActionMailer::Base.deliveries).to_not be_empty

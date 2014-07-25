@@ -92,30 +92,51 @@ describe UsersController do
       expect(assigns(:user)).to eq user
     end
 
-    context "valid update" do
-      before(:each) do
+    context "valid input update" do
+      before do
+      end
+      it "updates @user to db" do
+        set_current_user        
         patch :update, id: user ,user: { 
           name: "crokobit",
           password: "pw",
+          password_confirmation: "pw",
           email: "crokobit@gmail.com"
         }
-        user.reload
-      end
-      it "updates @user to db" do
-        expect(user.name).to eq "crokobit"
-        expect(user.authenticate("pw")).to eq user
-        expect(user.email).to eq "crokobit@gmail.com"
+        @user = User.first
+        expect(@user.name).to eq "crokobit"
+        expect(@user.authenticate("pw")).to eq @user
+        expect(@user.email).to eq "crokobit@gmail.com"
       end
       it "redirects to root_path" do
+        set_current_user        
+        patch :update, id: user ,user: { 
+          name: "crokobit",
+          password: "pw",
+          password_confirmation: "pw",
+          email: "crokobit@gmail.com"
+        }
         expect(response).to redirect_to root_path
+      end
+      it_behaves_like "require_same_user" do
+        let(:action) {
+          patch :update, id: Fabricate(:user), user: { 
+            name: "crokobit",
+            password: "pw",
+            password_confirmation: "pw",
+            email: "crokobit@gmail.com"
+          }
+        }
       end
     end
 
-    context "invalid update" do
-      before(:each) do
+    context "invalid input update" do
+      before do
+        set_current_user        
         patch :update, id: user ,user: { 
           name: "",
           password: "pw",
+          password_confirmation: "pw",
           email: "crokobit@gmail.com"
         }
       end

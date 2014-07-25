@@ -36,4 +36,4 @@ Stripe.setPublishableKey("#{ENV["STRIPE_PUBLISHABLE_KEY"]}");
         %fieldset.actions.control-group
           .controls
             = f.form_group do
-              = f.submit "Sign Up", html: { class: "btn btn-default" }
+              = f.submit (current_user.nil? ? "Sign Up" : "Update"), html: { class: "btn btn-default" }
