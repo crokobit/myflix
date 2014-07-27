@@ -20,8 +20,8 @@ StripeEvent.configure do |events|
     payment = Payment.find_by(reference_id: invoice_payment_reference_id(event))
 
     payment.update(
-      start_time: invoice_payment_succeeded_start_time(event),
-      end_time: invoice_payment_succeeded_end_time(event),
+      start_time: Time.at(invoice_payment_succeeded_start_time(event)),
+      end_time: Time.at(invoice_payment_succeeded_end_time(event)),
       cancel_at_period_end: false,
       subscription_id: invoice_payment_succeeded_subscription_id(event),
       subscription_active: true
