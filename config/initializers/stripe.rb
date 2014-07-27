@@ -30,8 +30,24 @@ StripeEvent.configure do |events|
   end
 
   events.all do |event|
-    Event.create(event: event["type"])     
+    if event["type"] == 'invoice.payment_succeeded'
+      customer = find_customer_by_customer_token(invoice_payment_succeeded_customer_token(event))
+      Event.create(event: event["type"], customer_id: customer.id)
+    elsif event["type"] == 'charge.succeeded'
+      customer = find_customer_by_customer_token(charge_customer_token(event))
+      Event.create(event: event["type"], customer_id: customer.id)
+    else
+      Event.create(event: event["type"])
+    end
   end
+
+  def find_customer_by_customer_token(customer_token)
+    User.find_by(customer_token: customer_token) 
+  end
+
+  def invoice_payment_succeeded_customer_token(event)
+    event["data"]["object"]["customer"]
+  end 
 
   def invoice_payment_succeeded_start_time(event)
     event["data"]["object"]["lines"]["data"][0]["period"]["start"]

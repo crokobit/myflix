@@ -82,7 +82,7 @@ describe "invoice.payment_succeeded event" do
     }
   end
   before do
-    @payment = Payment.create(reference_id: "ch_14IfSv4zdTxaHvAkH1ue8la5", customer: Fabricate(:user), amount: "2000")
+    @payment = Payment.create(reference_id: "ch_14IfSv4zdTxaHvAkH1ue8la5", customer: Fabricate(:user, customer_token: "cus_4RYalEj74BTkoc"), amount: "2000")
   end
   it "saves data to Payment", :vcr  do
     post '/stripe', invoice_payment_succeeded_event_data
