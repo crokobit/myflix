@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SignUpService do
-  let(:user) { Fabricate(:user) } 
 
   describe "mailer" do
+    let(:user) { Fabricate(:user) } 
     before do
       stripe_response = double(:stripe_response, successful?: true, customer_token: "SS")
       StripeWrapper::Customer.stub(:create).and_return(stripe_response)
@@ -19,6 +19,7 @@ describe SignUpService do
   end
 
   describe "create user" do
+    let(:user) { Fabricate(:user_sign_in_input) } 
     context "valid user information and valid card information" do
       before do
         stripe_response = double(:stripe_response, successful?: true, customer_token: "asdf")
@@ -32,6 +33,14 @@ describe SignUpService do
       it "saves stripe customer_token" do
         SignUpService.new(user, "test", nil).sign_up
         expect(User.first.customer_token).to eq "asdf"
+      end
+      it "makes active value true" do
+        SignUpService.new(user, "test", nil).sign_up
+        expect(User.first.active).to be_true
+      end
+      it "makes admin value false" do
+        SignUpService.new(user, "test", nil).sign_up
+        expect(User.first.admin).to eq false
       end
     end
 
