@@ -36,7 +36,7 @@ sport = Fabricate(:category, name: "sport")
 news = Fabricate(:category, name: "news")
 grammer = Fabricate(:category, name: "grammer")
 
-crokobit = Fabricate(:user, name: "crokobit", password: "pw")
+keroro = Fabricate(:user, name: "keroro", password: "pw")
 ivan = Fabricate(:user, name: "ivan")
 eva = Fabricate(:user, name: "eva")
 
@@ -45,7 +45,7 @@ User.create(name: "crokobit", password: "pw", email: "crokobit@gmail.com", admin
   Fabricate(:video, category: [sport, news, grammer].sample) do
     reviews(count: 1) {
       Fabricate(:review) {
-        user [crokobit, ivan, eva].sample
+        user [keroro, ivan, eva].sample
       }
     }
   end
