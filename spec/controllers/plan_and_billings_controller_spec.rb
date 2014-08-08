@@ -31,4 +31,16 @@ describe PlanAndBillingsController  do
       let(:action) { get :reactive_subscription }
     end
   end
+  context "show plan and billing" do
+    before do
+      payment = Payment.create(
+        customer_id: user.id,
+        start_time: ( DateTime.now + 1.month ).to_time,
+        end_time: DateTime.now.to_time
+      ) 
+    end
+    it "selects last create payment, assigns it to @payment_undecorate" do
+
+    end
+  end
 end

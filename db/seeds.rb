@@ -36,7 +36,7 @@ sport = Fabricate(:category, name: "sport")
 news = Fabricate(:category, name: "news")
 grammer = Fabricate(:category, name: "grammer")
 
-keroro = Fabricate(:user, name: "keroro", password: "pw")
+keroro = Fabricate(:user, name: "keroro")
 ivan = Fabricate(:user, name: "ivan")
 eva = Fabricate(:user, name: "eva")
 
