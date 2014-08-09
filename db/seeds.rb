@@ -40,7 +40,8 @@ keroro = Fabricate(:user, name: "keroro")
 ivan = Fabricate(:user, name: "ivan")
 eva = Fabricate(:user, name: "eva")
 
-User.create(name: "crokobit", password: "pw", email: "crokobit@gmail.com", admin: true)
+user = User.create(name: "crokobit", password: "pw", email: "crokobit@gmail.com", admin: true)
+Payment.create(id: 4, reference_id: "ch_14IfSv4zdTxaHvAkH1ue8la5", amount: 2000, customer_id: user.id, start_time: Time.at(1405944025), end_time: Time.at(1408622425), cancel_at_period_end: false, subscription_id: "sub_4RYaIXR0qKYWEc")
 10.times do
   Fabricate(:video, category: [sport, news, grammer].sample) do
     reviews(count: 1) {
