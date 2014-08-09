@@ -4,7 +4,7 @@ class PlanAndBillingsController < ApplicationController
   def index
     payments = Payment.where(customer: current_user)
     @payment = payments.last.decorate
-    @payments = PaymentDecorator.decorate_collection(payments)
+    @payments = payments.decorate
   end
 
   def cancel_subscription

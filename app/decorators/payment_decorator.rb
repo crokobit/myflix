@@ -29,7 +29,7 @@ class PaymentDecorator < Draper::Decorator
     if object == nil || object.amount == nil
       "stripe_event error"
     else
-      "$#{object.amount}" 
+      "$#{object.amount/100.0}" 
     end
   end
 end

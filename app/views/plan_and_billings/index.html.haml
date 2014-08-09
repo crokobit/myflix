@@ -15,7 +15,7 @@
               %tr
                 %td Gold Plan
                 %td= @payment.next_billing_date
-                %td 9.99 per month
+                %td #{@payment.show_amount} per month
         - if @payments.last.subscription_active
           = button_to "Cancel Service", cancel_subscription_path, class: "btn btn-default", method: :get
         - else
