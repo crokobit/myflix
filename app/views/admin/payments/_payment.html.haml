@@ -1,6 +1,6 @@
 %tr
-  %td= payment.customer.name
-  %td= payment.customer.email
-  %td= payment.amount
-  %td= payment.reference_id
+  %td= payment.try(:customer).try(:name)
+  %td= payment.try(:customer).try(:email)
+  %td= payment.try(:show_amount)
+  %td= payment.try(:reference_id)
 

@@ -1,10 +1,10 @@
 class PlanAndBillingsController < ApplicationController
   before_action :require_user
+  before_action :stripe_event_error_handler, only: [:index]
   def index
     payments = Payment.where(customer: current_user)
-    @payment_undecorate = Payment.where(customer: current_user).last
-    @payment = PaymentDecorator.decorate(@payment_undecorate)
-    @payments = payments.all.map { |payment| PaymentDecorator.decorate(payment) }
+    @payment = payments.last.decorate
+    @payments = PaymentDecorator.decorate_collection(payments)
   end
 
   def cancel_subscription
@@ -21,5 +21,14 @@ class PlanAndBillingsController < ApplicationController
     @payments.last.subscription_active = true
     @payments.last.save
     redirect_to plan_and_billings_path
+  end
+
+  private
+
+  def stripe_event_error_handler
+    payments = Payment.where(customer: current_user)
+    if payments.blank?
+      Payment.create(customer: current_user)
+    end
   end
 end
