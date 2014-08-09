@@ -8,18 +8,15 @@ StripeEvent.configure do |events|
   end
 
   events.subscribe 'charge.succeeded' do |event|
-    customer = User.find_by(customer_token: charge_customer_token(event)) 
-    Payment.create(
-      reference_id: charge_reference_id(event),
-      customer: customer, 
-      amount: charge_amount(event)
-    ) 
   end
 
   events.subscribe 'invoice.payment_succeeded' do |event|
-    payment = Payment.find_by(reference_id: invoice_payment_reference_id(event))
+    customer = User.find_by(customer_token: invoice_payment_succeeded_customer_token(event)) 
 
-    payment.update(
+    Payment.create(
+      reference_id: invoice_payment_reference_id(event),
+      customer: customer,
+      amount: invioce_amount(event),
       start_time: Time.at(invoice_payment_succeeded_start_time(event)),
       end_time: Time.at(invoice_payment_succeeded_end_time(event)),
       cancel_at_period_end: false,
@@ -70,7 +67,7 @@ StripeEvent.configure do |events|
   def charge_reference_id(event)
     event["data"]["object"]["id"]
   end
-  def charge_amount(event)
-    event["data"]["object"]["amount"]
+  def invioce_amount(event)
+    event["data"]["object"]["lines"]["data"].first["amount"]
   end
 end

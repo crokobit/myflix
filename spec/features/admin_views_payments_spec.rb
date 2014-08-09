@@ -12,7 +12,7 @@ feature "only admin can view paynents" do
     expect(page).to have_content @payment.customer.name
     expect(page).to have_content @payment.reference_id
     expect(page).to have_content @payment.customer.email
-    expect(page).to have_content @payment.amount
+    expect(page).to have_content @payment.decorate.show_amount
   end
 
   scenario "normal user can not see payment" do
