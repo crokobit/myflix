@@ -24,3 +24,6 @@
               = link_to "Account", edit_user_path(current_user)
               = link_to "Plan and Billing", plan_and_billings_path
               = link_to "Sign Out", logout_path
+              - if current_user.admin
+                = link_to "new video", new_admin_video_path
+                = link_to "view payments", admin_views_payments_path
