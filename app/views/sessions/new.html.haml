@@ -14,7 +14,7 @@
             = label_tag :password
             .row
               .col-sm-4
-                = text_field_tag :password, nil, class: "form-control"
+                = password_field_tag :password, nil, class: "form-control"
         %fieldset.form-group.action
           = submit_tag 'Login', class: "btn btn-default"
           = link_to "Forget Password", enter_email_path, class: "btn btn-default"
