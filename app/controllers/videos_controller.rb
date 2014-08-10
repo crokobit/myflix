@@ -13,7 +13,7 @@ class VideosController < ApplicationController
     # elsif
     #   @review = @video.reviews.where(user: current_user)
     # end
-    @rating = @video.reviews.find_by(user: current_user).rating
+    @rating = @video.reviews.find_by(user: current_user).try(:rating)
     @review = Review.new
   end
 
