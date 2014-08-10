@@ -15,7 +15,7 @@ Myflix::Application.configure do
 
   config.assets.precompile += %w( payment.js )
 
-  config.action_mailer.default_url_options = { host: 'localhost:3000'}
+  config.action_mailer.default_url_options = { host: 'gentle-beyond-6652.herokuapp.com'}
 
   config.cache_classes = true
   config.eager_load = true
