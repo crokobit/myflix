@@ -21,6 +21,7 @@ gem 'stripe'
 gem 'draper'
 gem 'stripe_event'
 gem 'fog'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'sqlite3'
